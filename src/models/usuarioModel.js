@@ -86,27 +86,26 @@ function gerarToken() {
 }
 
 async function autenticar(email, senha) {
-  // ! LOGA O USUÁRIO NO SITE
-  let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
+  try {
+    // ! LOGA O USUÁRIO NO SITE
+    let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
-  const result = await bd.executar(query, [email, senha]);
+    const result = await bd.executar(query, [email, senha]);
 
-  if (result.length === 0) return false; // ! SE NÃO HOUVER RESULTADO DO SELECT
+    if (result.length === 0 || result.length > 1) return false; // ! SE NÃO HOUVER RESULTADO DO SELECT OU SE HOUVER MAIS DE UM RESULTADO
 
-  if (result.length === 1) {
     // ! SE HOUVER APENAS 1 RESULTADO (IMPORTANTO PARA USUÁRIOS EVITAR DUPLICADOS)
-    query =
-      "select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?"; // ! SOBRESCREVO A VARIÁVEL, AGORA PARA CONTAR QUANTOS QUIZES O USUÁRIO CONCLUIU
+    query = "select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?"; // ! SOBRESCREVO A VARIÁVEL, AGORA PARA CONTAR QUANTOS QUIZES O USUÁRIO CONCLUIU
 
     const result2 = await bd.executar(query, [result[0].idUsuario]);
-    if(!result2.ok) return false;
+    if (!result2) return false;
 
     const token = gerarToken(); // ! GERO O TOKEN DO USUÁRIO
 
     query = 'insert into token (token, fkUsuario) values (?, ?)'
 
     const inserirToken = await bd.executar(query, [token, result[0].idUsuario]);
-    if(!inserirToken.ok) return false;
+    if (!inserirToken) return false;
 
     usuariosLogados.push({
       // ? INSIRO TODOS OS DADOS NUM ARRAY, QUE PERMANECERÁ NO BACKEND
@@ -122,9 +121,9 @@ async function autenticar(email, senha) {
     });
 
     return token; // ? SE TUDO DER CERTO, RETORNA O TOKEN PARA O FRONT
+  } catch (e) {
+    console.log(e);
   }
-
-  return false;
 }
 
 function cadastrar(nome, email, identidade, dtNascimento, senha) {
@@ -196,16 +195,42 @@ async function excluir(idUsuario) {
   let update = 'update quiz set fkUsuario = 1 where fkUsuario = ?'
   const quizes = await bd.executar(update, [idUsuario]);
 
-  if(!quizes.ok) return;
+  if (!quizes.ok) return false;
 
   let query = `delete from usuario where idUsuario = ?`;
   return bd.executar(query, [idUsuario]);
 }
 
-function verificar(token){
-  let query = 'select token, case when end as situacao from token where token = ?';
+async function verificar(token) {
+  let query = `select token, 
+    case 
+      when 
+        DATE(dthr) < DATE(now()) OR 
+        MONTH(dthr) < MONTH(now()) OR 
+        HOUR(dthr) + 12 < HOUR(now()) 
+        then 'Expirado' 
+        else 'Renovado' 
+      end as situacao 
+    from token where token = ?`;
+
+  const resultado = await bd.executar(query, [token]);
+  if(!resultado) return false;
+
+  console.log(resultado)
+
+  return resultado;
+}
+
+function atualizar(token) {
+  let query = `update token set dthr = now() where token = ?`;
 
   return bd.executar(query, [token]);
+}
+
+function deslogar(id) {
+  let query = `delete from token where fkUsuario = ?`;
+
+  return bd.executar(query, [id]);
 }
 
 module.exports = {
@@ -214,5 +239,7 @@ module.exports = {
   informacoes,
   usuariosLogados,
   excluir,
-  verificar
+  verificar,
+  atualizar,
+  deslogar
 };

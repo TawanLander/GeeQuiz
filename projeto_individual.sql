@@ -26,6 +26,14 @@ cargo char(1) not null
 );
 select * from quizes_completos;
 select * from acertos;
+select * from usuario;
+select * from token;
+
+truncate table token;
+
+describe token;
+
+insert into token (token, fkUsuario) values ('abc', 1);
 
 insert into usuario values(default, 'GeeQuiz', 'tlander2007@gmail.com', 'Masculino', '2007-04-02', 'Admin123#', 'a');
 insert into usuario values (default, 'Tawan Lander', 'tlander2007@gmail.com', 'Masculino', '2007-04-02', 'SenhaFortona12#', 'p');
@@ -212,5 +220,3 @@ constraint fkUsuario_token foreign key (fkUsuario) references usuario(idUsuario)
 token varchar(150),
 dthr datetime default now()
 );
-
-describe usuario;

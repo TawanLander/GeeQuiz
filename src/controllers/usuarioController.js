@@ -1,4 +1,4 @@
-var usuarioModel = require("../models/usuarioModel");
+const usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
     let email = req.body.email;
@@ -12,7 +12,7 @@ function autenticar(req, res) {
 
         usuarioModel.autenticar(email, senha)
             .then(token => {
-                if(!token) return res.status(400).send('Você não tem cadastro!'); // SE TOKEN RETORNAR FALSE ELE RETORNA E DA ERRO
+                if (!token) return res.status(400).send('Você não tem cadastro!'); // SE TOKEN RETORNAR FALSE ELE RETORNA E DA ERRO
                 res.json({
                     token: token
                 });
@@ -65,11 +65,11 @@ function informacoes(req, res) {
     });
 }
 
-function excluir(req, res, idUsuario){
-    if(idUsuario === undefined){
+function excluir(req, res, idUsuario) {
+    if (idUsuario === undefined) {
         return res.status(400).send('Id undefined, impossível de continuar!')
     }
-    
+
     usuarioModel.excluir(idUsuario).then(resultado => {
         return res.status(200).json(resultado);
     }).catch(e => {
@@ -79,20 +79,40 @@ function excluir(req, res, idUsuario){
 
 }
 
-function verificar(req, res, token){
-    usuarioModel.verificar(token).then(r => {
-        let resposta = r.json();
-        if(resposta.situacao === 'expirado'){ // ? USUÁRIO CAIU NA MALHA FINA E SERÁ EXCLUÍDO
+async function verificar(req, res, token) {
+    try {
+        const model = await usuarioModel.verificar(token);
+        if(!model) return res.status(400).send(false);
+        
+        if (model.situacao === 'Expirado') { // ? USUÁRIO CAIU NA MALHA FINA E SERÁ EXCLUÍDO
 
-            
+            const array = usuarioModel.usuariosLogados; // ? PEGA O ARRAY DOS USUÁRIO LOGADOS
+            const user = array.find((user) => user.token === token); // ? ACHA O USUÁRIO ATUAL
+            array.splice(array.indexOf(user), 1); // ? RETIRA ELE DO ARRAY, ENCERRANDO A CONEXÃO DELE
 
-            return res.status(200).send(false);
+            const deletar = await usuarioModel.deletar(token);
+
+            return false;
         }
 
-        return res.status(200).send(true); // ? USUÁRIO FOI VERIFICADO COM SUCESSO
-    }).catch(e => {
-        return res.status(400).send(`Erro ao verificar usuário! ${e.sqlMessage}`)
-    })
+        const atualizar = await usuarioModel.atualizar(token); // ? ELSE SE SITUAÇÃO VIER COMO RENOVADO
+
+        return true; // ? USUÁRIO FOI VERIFICADO COM SUCESSO
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function deslogar(req, res, id) {
+    try {
+        const deslogar = await usuarioModel.deslogar(id);
+        if (!deslogar) return res.status(400).send(false);
+
+        res.status(200).send('Usuário deletado!');
+    } catch (e) {
+        console.log(e)
+        res.status(400).send(e)
+    }
 }
 
 module.exports = {
@@ -100,5 +120,6 @@ module.exports = {
     cadastrar,
     informacoes,
     excluir,
-    verificar
+    verificar,
+    deslogar
 }

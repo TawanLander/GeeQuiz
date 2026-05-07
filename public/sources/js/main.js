@@ -43,15 +43,13 @@ function login() {
     }).then(resposta => {
         if (resposta.ok) {
             resposta.json().then(token => {
-                console.log(token);
                 sessionStorage.setItem('token', token.token)
-                setTimeout(function () {
-                    window.location = "./index.html";
+                setTimeout(() => {
+                    window.location.href = "./index.html";
                 }, 500);
             });
         } else {
             console.log("Houve um erro ao tentar realizar o login!");
-
             resposta.text().then(e => {
                 console.error(e);
             });
