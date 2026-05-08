@@ -7,15 +7,7 @@ async function carregarElementos(janela){
 
     headerMsg += `
         <div class="logo">
-        <svg width="200" height="50" viewBox="0 0 200 60">
-            <g transform="translate(10,10)">
-                <path d="M15,5 Q20,0,30,5 T45,15 Q50,25,45,35 L40,40 Q30,50,20,40 L5,20 Q0,10,10,5 Z" fill="#4c4cff" />
-                <path d="M22,18 L32,28 L42,10" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
-            </g>
-            <text x="65" y="45" font-family="'Caveat Brush', cursive" font-size="40" fill="#fff">
-                Gee<tspan fill="#4c4cff">Quiz</tspan>
-            </text>
-        </svg>
+        <img src='./sources/imgs/logo.png' alt='Logo'/>
       </div>
       <div class="container" id="container-header">
         <!--Parte do INÍCIO-->

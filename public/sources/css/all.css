@@ -67,7 +67,14 @@ header {
 }
 
 header .logo {
-    width: 15%;
+    margin-left: 15px;
+    width: 30%;
+}
+
+header img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 header .container {

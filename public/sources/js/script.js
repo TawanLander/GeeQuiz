@@ -13,19 +13,8 @@ const erroIdade = document.getElementById('erro-idade');
 const erroSenhaConfirmar = document.getElementById('erro-senhaConfirmar');
 
 var generoAlternativo = false;
-var generoValor = '';
 
 const outroGenero = document.getElementById('ipt-outroGenero');
-
-/*
-CONSTANTES PARA PEGAR OS SPANS DA PARTE DA ABA DE CONTA (CONTA.HTML) PARA MUDAR OS VALORES SE QUISER
-*/
-
-const spanNome = document.getElementById('span-nome');
-const spanIdade = document.getElementById('span-idade');
-const spanGenero = document.getElementById('span-genero');
-const spanQuizes = document.getElementById('span-quizes');
-const spanSenha = document.getElementById('span-senha');
 
 function verificarNome() {
     let nomeValor = nome.value;

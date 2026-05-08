@@ -96,4 +96,15 @@ router.get("/dados", async (req, res) => {
   }); // ? SE OCORRER TUDO, RETORNA O JSON USUÁRIO PARA O FRONT
 });
 
+router.post('/mudar', async (req, res) => {
+  // ? PRECISA DE TOKEN
+  const verificar = verificarToken(req, res);
+    if(!verificar) return res.status(400).send(false);
+
+  const resultado = await verificar[0];
+  if(!resultado) return res.status(400).send(false);
+
+  usuarioController.mudar(req, res);
+});
+
 module.exports = router;

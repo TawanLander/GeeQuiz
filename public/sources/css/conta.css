@@ -36,6 +36,7 @@
 svg{
     margin-left: 10px;
     cursor: pointer;
+    pointer-events: all;
 }
 
 .btn-conta {

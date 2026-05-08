@@ -115,11 +115,24 @@ async function deslogar(req, res, id) {
     }
 }
 
+async function mudar(req, res) {
+    try{
+        const mudar = await usuarioModel.mudar(param);
+        if(!mudar) return res.status(400).send(false);
+
+        res.status(200).send('Informações Atualizadas!');
+    }catch(e){
+        console.log(e)
+        return res.status(400).send(e);
+    }
+}
+
 module.exports = {
     autenticar,
     cadastrar,
     informacoes,
     excluir,
     verificar,
-    deslogar
+    deslogar,
+    mudar
 }

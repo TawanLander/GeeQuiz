@@ -1,4 +1,9 @@
 function cadastrar() {
+    let generoValor = document.getElementById('slc-genero').value;
+    if(generoAlternativo){
+        generoValor = document.getElementById('ipt-outroGenero').value;
+    }
+
     fetch("/usuarios/cadastrar", {
         method: "POST",
         headers: {
@@ -7,7 +12,7 @@ function cadastrar() {
         body: JSON.stringify({
             nome: nome.value,
             email: email.value,
-            identidade: genero.value,
+            identidade: generoValor,
             dtNascimento: idade.value,
             senha: senha.value
         }),
