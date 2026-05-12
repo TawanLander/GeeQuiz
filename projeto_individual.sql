@@ -77,8 +77,8 @@ fkPerguntas int,
 fkOpcoes int,
 selecionado tinyint,
 constraint pkQuintupla_acertos primary key (fkQuizesCompletos, fkUsuario, fkQuiz, fkPerguntas, fkOpcoes),
-constraint fkQuizesCompletos_acertos foreign key (fkQuizesCompletos, fkUsuario, fkQuiz) references quizes_completos(id, fkUsuario, fkQuiz),
-constraint fkPerguntas_opcoes foreign key (fkOpcoes) references opcoes(id, fkPerguntas)
+constraint fkQuizesCompletos_acertos foreign key (fkQuizesCompletos, fkUsuario, fkQuiz) references quizes_completos(id, fkUsuario, fkQuiz) on delete cascade,
+constraint fkPerguntas_acertos foreign key (fkOpcoes, fkPerguntas) references opcoes(id, fkPerguntas) on delete cascade
 );
 
 create table perguntas(

@@ -13,9 +13,10 @@ async function verificarSessao(causa) {
       return (window.location.href = "./index.html"); // ? SE TEM CAUSA SIGNIFICA QUE É POR ALGUM MOTIVO QUE O USUÁRIO FOI REDIRECIONADO
     if (!resposta.ok) return false; // ? SE NÃO TEM RESPOSTA RETORNA FALSE (PARA PLOTAGEM DA HEADER, FOOTER E QUIZES)
 
-    const cargo = await resposta.text();
+    const r = await resposta.json();
 
-    if (causa === "cargo") return cargo;
+    if (causa === "cargo") return r.cargo;
+    if (causa === "nome") return r.nome;
 
     if (causa === "especial" && cargo === "p")
       return (window.location.href = "./index.html");

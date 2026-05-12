@@ -43,7 +43,7 @@
 }
 
 .carroussel {
-    margin: 100px auto;
+    margin: 0 auto 100px auto;
     width: 97%;
     border: 5px solid var(--preto-fosco);
     display: flex;
@@ -67,14 +67,30 @@
 }
 
 .cards {
-    flex: 0 0 9em;
+    display: flex;
+    flex-direction: row !important;
+    padding: .3em;
+    flex: 0 0 12em;
     height: 6em;
-    padding: 1em;
-    background: cornflowerblue;
+    background: var(--preto-fosco);
     font-size: 3em;
     border-radius: .2em;
     text-align: center;
     align-content: center;
+    justify-content: center;
+}
+
+.cards img{
+    justify-self: center;
+    align-self: center;
+    object-fit: cover;
+    width: 60%;
+}
+
+.titulo-carrossel{
+    font-size: xx-large;
+    font-weight: 800;
+
 }
 
 @keyframes girar {
@@ -83,7 +99,7 @@
     }
 
     to {
-        translate: -100%;
+        translate: 0;
     }
 }
 

@@ -85,19 +85,13 @@ async function verificar(req, res, token) {
         if(!model) return res.status(400).send(false);
         
         if (model.situacao === 'Expirado') { // ? USUÁRIO CAIU NA MALHA FINA E SERÁ EXCLUÍDO
-
-            const array = usuarioModel.usuariosLogados; // ? PEGA O ARRAY DOS USUÁRIO LOGADOS
-            const user = array.find((user) => user.token === token); // ? ACHA O USUÁRIO ATUAL
-            array.splice(array.indexOf(user), 1); // ? RETIRA ELE DO ARRAY, ENCERRANDO A CONEXÃO DELE
-
             const deletar = await usuarioModel.deletar(token);
 
             return false;
         }
-
         const atualizar = await usuarioModel.atualizar(token); // ? ELSE SE SITUAÇÃO VIER COMO RENOVADO
-
-        return true; // ? USUÁRIO FOI VERIFICADO COM SUCESSO
+        
+        return model; // ? USUÁRIO FOI VERIFICADO COM SUCESSO
     } catch (e) {
         console.log(e);
     }

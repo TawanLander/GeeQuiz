@@ -56,7 +56,7 @@ function gostei(id) {
 }
 
 async function terminar(idQuiz, idUsuario, array) {
-  let query = "insert into quizes_completos (fkQuiz, fkUsuario) values (?, ?)"; 
+  let query = "insert into quizes_completos (fkQuiz, fkUsuario) values (?, ?)";
   const resultado = await bd.executar(query, [idQuiz, idUsuario]); // ? INSERIR OS DADOS PRIMEIRAMENTE NA TEBELA QUIZES CONCLUÍDOS, JÁ COM DATA E HORA
 
   let id = resultado.insertId; // ! PEGA O ID DO RESULTADO EXECUTADO, IMPORTANTE PARA O INSERT ABAIXO
@@ -81,6 +81,12 @@ async function terminar(idQuiz, idUsuario, array) {
   }
 }
 
+function completos(id) {
+  let query = 'select quiz.titulo, quiz.tipo, quiz.imagem, quiz.genero, quiz.gostados, quiz.idQuiz from quiz join quizes_completos on quizes_completos.fkQuiz = quiz.idQuiz where quizes_completos.fkUsuario = ?;'
+
+  return bd.executar(query, [id]);
+}
+
 module.exports = {
   listarInformacoes,
   listarQuizes,
@@ -92,4 +98,5 @@ module.exports = {
   deletar,
   gostei,
   terminar,
+  completos
 };

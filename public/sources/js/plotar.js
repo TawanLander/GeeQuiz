@@ -32,7 +32,7 @@ async function plotarDados(r) {
     <div class="content">Gênero: ${item.genero}</div>
     <div class="content">Tipo: ${item.tipo}</div>
     <div class="content">Quantidade de Perguntas: ${item.qtd}</div>
-    <div class="content">Gostados: 4.5</div>
+    <div class="content">Gostados: 4</div>
     `
 
     if(item.fkUsuario != null){

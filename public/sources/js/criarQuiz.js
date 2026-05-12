@@ -11,7 +11,9 @@ let perguntaAtual = 0; // VE A PERGUNTA ATUAL DO USUÁRIO, CASO ELE VOLTE PARA O
 
 var erro = false;
 
-function montagemQuiz(i) {
+async function montagemQuiz(i) {
+    const nomeUsuario = await verificarSessao('nome')
+
     if (i === 1) { // TÍTULO DO QUIZ
         if (tituloQuiz.value != '') {
             let valor = (tituloQuiz.value).slice(0, 1).toUpperCase() + (tituloQuiz.value).slice(1);
@@ -38,7 +40,7 @@ function montagemQuiz(i) {
     } else if (i === 4) { // IMAGEM DO QUIZ
         document.getElementById('img-quiz-template').src = imgQuiz.value;
     } else { // NOME DO USUÁRIO QUE CRIOU O QUIZ
-        document.getElementById('nome-quiz-template').innerHTML = `Feito por: ${JSON.parse(sessionStorage.getItem('usuario')).nome}`
+        document.getElementById('nome-quiz-template').innerHTML = `Feito por: ${nomeUsuario}`
     }
 }
 
@@ -242,7 +244,6 @@ function formatarTitulo() {
     let formatar = pergunta.value.substring(0, 1).toUpperCase() + pergunta.value.substring(1);
 
     pergunta.value = formatar;
-
 }
 
 async function terminarQuiz() {
@@ -305,6 +306,7 @@ async function terminarQuiz() {
 
         if (!fetchPerguntas.ok) {
             throw new Error(`Erro no Fetch Cadastrar Perguntas! ${fetchPerguntas.status}`);
+            console.log(fetchPerguntas.text());
         }
 
         for (let e = 0; e < opcoes.length; ++e) {

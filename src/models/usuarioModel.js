@@ -1,5 +1,4 @@
 var bd = require("../database/config"); // ! IMPORTA O BANCO DE DADOS PARA O ARQUIVO
-const usuariosLogados = []; // ! ARRAY COM TODOS OS DADOS DOS USUÁRIOS LOGADOS, PARA VALIDAÇÃO DE CARGO E IMPEDIR RASTREIO DE DADOS
 
 function gerarToken() {
   // ! FUNÇÃO CHAMADA AO AUTENTIAR O USUÁRIO, GERA UM TOKEN ALEATÓRIO E ENVIA APENAS ELE PARA O SESSION STORAGE, IMPEDINDO O RASTREIO DE DADOS E MANIPULAÇÃO DE PERMISSÕES
@@ -107,19 +106,6 @@ async function autenticar(email, senha) {
     const inserirToken = await bd.executar(query, [token, result[0].idUsuario]);
     if (!inserirToken) return false;
 
-    usuariosLogados.push({
-      // ? INSIRO TODOS OS DADOS NUM ARRAY, QUE PERMANECERÁ NO BACKEND
-      token: token,
-      id: result[0].idUsuario,
-      nome: result[0].nome,
-      email: result[0].email,
-      identidade: result[0].identidade,
-      idade: result[0].idade,
-      senha: result[0].senha,
-      cargo: result[0].cargo,
-      quizes: result2[0].quizes_completos,
-    });
-
     return token; // ? SE TUDO DER CERTO, RETORNA O TOKEN PARA O FRONT
   } catch (e) {
     console.log(e);
@@ -195,7 +181,7 @@ async function excluir(idUsuario) {
   let update = 'update quiz set fkUsuario = 1 where fkUsuario = ?'
   const quizes = await bd.executar(update, [idUsuario]);
 
-  if (!quizes.ok) return false;
+  if (!quizes) return false;
 
   let query = `delete from usuario where idUsuario = ?`;
   return bd.executar(query, [idUsuario]);
@@ -214,11 +200,29 @@ async function verificar(token) {
     from token where token = ?`;
 
   const resultado = await bd.executar(query, [token]);
-  if(!resultado) return false;
+  if (!resultado) return false;
 
-  console.log(resultado)
+  query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario join token on idUsuario = fkUsuario where token = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
-  return resultado;
+  const usuario = await bd.executar(query, [resultado[0].token])
+  if (!usuario) return false;
+
+  query = 'select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?'
+  const quiz = await bd.executar(query, [usuario[0].idUsuario]);
+  if(!quiz) return false;
+
+  const user = {
+    id: usuario[0].idUsuario,
+    nome: usuario[0].nome,
+    email: usuario[0].email,
+    identidade: usuario[0].identidade,
+    idade: usuario[0].idade,
+    senha: usuario[0].senha,
+    cargo: usuario[0].cargo,
+    quizes: quiz[0].quizes_completos
+  }
+
+  return user;
 }
 
 function atualizar(token) {
@@ -235,7 +239,7 @@ function deslogar(id) {
 
 async function mudar(array, id) {
 
-  for(let i = 0; i < array.length; ++i){
+  for (let i = 0; i < array.length; ++i) {
     let campo = array[i].campo;
     let info = array[i].info;
     let query = 'update from usuario set ? = ? where idUsuario = ?'
@@ -249,7 +253,6 @@ module.exports = {
   autenticar,
   cadastrar,
   informacoes,
-  usuariosLogados,
   excluir,
   verificar,
   atualizar,

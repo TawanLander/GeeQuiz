@@ -167,6 +167,12 @@ function terminar(req, res, idUsuario) {
     })
 }
 
+async function completos(req, res, id) {
+    const quizes = await quiz.completos(id);
+    if(!quizes) return res.status(400).send(false);
+
+    res.status(200).json(quizes);
+}
 
 module.exports = {
     listarInformacoes,
@@ -178,5 +184,6 @@ module.exports = {
     cadastrarOpcoes,
     deletar,
     gostei,
-    terminar
+    terminar,
+    completos
 };

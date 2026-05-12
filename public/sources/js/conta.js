@@ -119,3 +119,16 @@ async function plotarGraficos() {
   `
   exibirDados();
 }
+
+async function pegarQuizesCompletos(){
+  const div = document.getElementById('main');
+
+  const pegarQuizes = await fetch('/quizes/completos', {
+    headers: {
+      token: sessionStorage.getItem('token')
+    }
+  });
+  if(!pegarQuizes.ok) throw new Error(`Erro no fetch! ${pegarQuizes.status}`);
+
+  console.log(await pegarQuizes.json())
+}
