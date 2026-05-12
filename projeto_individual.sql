@@ -24,6 +24,8 @@ dtNascimento date not null,
 senha varchar(30) not null,
 cargo char(1) not null
 );
+
+use site;
 select * from quizes_completos;
 select * from acertos;
 select * from usuario;
