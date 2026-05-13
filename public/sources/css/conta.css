@@ -5,14 +5,15 @@
     text-align: start;
 }
 
-.dashs{
+.dashs {
     width: 100%;
     height: 100%;
     min-height: 300px;
 }
 
-.parte{
+.parte {
     display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -22,18 +23,19 @@
     font-weight: bold;
     font-size: xx-large;
 }
+
 .parte h2 {
     font-weight: bold;
 }
 
-.span{
+.span {
     display: flex;
     flex-direction: row;
     align-items: center;
     text-align: center;
 }
 
-svg{
+svg {
     margin-left: 10px;
     cursor: pointer;
     pointer-events: all;
@@ -57,19 +59,64 @@ svg{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.btn-conta:nth-child(2){
+.btn-conta:nth-child(2) {
     color: var(--cor-texto);
     background-color: var(--atencao);
 }
 
 
-.btn-conta:last-child{
+.btn-conta:last-child {
     color: var(--cor-texto);
     background-color: darkred;
 }
 
-.parte:nth-child(2){
-    flex-direction: column;
+.parte:nth-child(2) {
     gap: 20px;
     margin: 10px;
+}
+
+.quizes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.quiz {
+    width: calc(25% - 25px);
+    min-width: 400px;
+    min-height: 600px;
+    height: auto;
+    border-radius: 15px;
+    border: 2px solid var(--preto);
+    align-items: start;
+    justify-content: start;
+    text-align: start;
+    box-shadow: 0 5px 15px var(--box-shadow);
+    background-color: var(--preto-fosco);
+    cursor: pointer;
+    position: relative;
+}
+
+.quiz h1 {
+    font-weight: 550;
+    font-size: xx-large;
+    color: var(--cor-texto-quiz)
+}
+
+.content {
+    font-weight: 550;
+    font-size: x-large;
+    color: var(--cor-texto-quiz)
+}
+
+img {
+    width: 100%;
+    height: 275px;
+    border-radius: 8px;
+    object-fit: cover;
 }

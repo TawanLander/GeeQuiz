@@ -130,5 +130,33 @@ async function pegarQuizesCompletos(){
   });
   if(!pegarQuizes.ok) throw new Error(`Erro no fetch! ${pegarQuizes.status}`);
 
-  console.log(await pegarQuizes.json())
+  const quizes = await pegarQuizes.json();
+
+  if(quizes.length === 0) return;
+
+  let msg = '<div class="parte"><h1>Seu histórico de quizes!</h1><div class="quizes">';
+
+  quizes.forEach(item => {
+    msg += `
+    <div class="quiz" onclick="redirecionarParaAnalise(${item.id})">
+      <div><img src="${item.imagem}"></div>
+      <div class="geral"><h1>${item.titulo}</h1>
+      <div class="content">Gênero: ${item.genero}</div>
+      <div class="content">Tipo: ${item.tipo}</div>
+      <div class="content">Quantidade de Perguntas: ${item.qtd}</div>
+      <div class="content">Gostados: 4</div>
+      <div class="content">Feito por: ${item.nome}</div>
+    </div>
+      `    
+  });
+
+  msg += '</div></div>'
+
+  div.innerHTML += msg;
+}
+
+function redirecionarParaAnalise(id){
+  sessionStorage.setItem('quiz', id);
+
+  window.location.href = './analiseQuiz.html'
 }

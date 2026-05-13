@@ -82,7 +82,17 @@ async function terminar(idQuiz, idUsuario, array) {
 }
 
 function completos(id) {
-  let query = 'select quiz.titulo, quiz.tipo, quiz.imagem, quiz.genero, quiz.gostados, quiz.idQuiz from quiz join quizes_completos on quizes_completos.fkQuiz = quiz.idQuiz where quizes_completos.fkUsuario = ?;'
+  let query = `
+  select usuario.nome, quiz.titulo, quiz.tipo, quiz.imagem, quiz.genero, quiz.gostados, quiz.idQuiz as id, count(perguntas.id) as qtd
+    from quiz 
+      join quizes_completos 
+        on quizes_completos.fkQuiz = quiz.idQuiz 
+      join usuario
+        on usuario.idUsuario = quiz.fkUsuario
+      join perguntas
+        on quiz.idQuiz = perguntas.fkQuiz
+    where quizes_completos.fkUsuario = ?
+    group by quiz.idQuiz;`
 
   return bd.executar(query, [id]);
 }

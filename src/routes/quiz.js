@@ -47,10 +47,7 @@ router.post('/perguntas', async (req, res) => { // ? ROTA PARA PLOTAR AS PERGUNT
     controller.listarPerguntas(req, res);
 });
 
-router.post('/opcoes', async (req, res) => { // ? ROTA PARA PLOTAR AS OPCOES NA QUIZ.HTML // PRECISA DE TOKEN
-    const verificar = await verificarToken(req, res); // ? ENVIA O CORPO DA REQUISIÇÃO A FUNÇÃO
-    if (!verificar) return res.status(400).send(false); // ? SE O TOKEN NÃO FOR VÁLIDO
-
+router.post('/opcoes', async (req, res) => { // ? ROTA PARA PLOTAR AS OPCOES NA QUIZ.HTML
     controller.listarOpcoes(req, res);
 });
 

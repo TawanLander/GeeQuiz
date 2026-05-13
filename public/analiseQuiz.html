@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="view-transition" content="same-origin">
+    <title>Vou Pensar</title>
+    <link rel="stylesheet" href="./sources/css/all.css" />
+    <link rel="stylesheet" href="./sources/css/quiz.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="icon" href="" />
+    <script src="./sources/js/script.js" defer></script>
+    <script src="./sources/js/componentesPagina.js" defer></script>
+    <script src="./sources/js/sessao.js" defer></script>
+    <script src="./sources/js/analiseQuiz.js" defer></script>
+
+  </head>
+  <body onload="carregarElementos(), carregarQuizAnalisado(sessionStorage.getItem('quiz'))">
+    <header></header>
+    <main>
+        <div class="quiz" id="quiz"></div>
+    </main>
+    <footer></footer>
+  </body>
+</html>

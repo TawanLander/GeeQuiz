@@ -17,8 +17,9 @@ async function carregarElementos(janela){
           <!--Parte de LOGIN ou da CONTA-->` 
 
     if(sessao){
-        headerMsg += `<a id="criarQuiz" href="./criarQuiz.html" class="a-resto">Criar Seu Quiz</a>
-       <a id="conta" href="./conta.html" class="animation-header">Conta</a>`
+        headerMsg += `
+        <a id="criarQuiz" href="./criarQuiz.html" class="a-resto">Criar Seu Quiz</a>
+        <a id="conta" href="./conta.html" class="animation-header">Conta</a>`
     } else {
         headerMsg += `<a id="login" class="animation-header" href="./login.html">Login</a>`
     }
@@ -26,7 +27,7 @@ async function carregarElementos(janela){
 
     footer.innerHTML = `&copy; 2026 Geequiz - Todos os Direitos Reservados <br> Dados para contato: <br> WhatsApp: 11 - 9191-0808 <br> Email: suporte@geequiz.com`
 
-    marcarPaginaAtual(janela)
+    if(janela) marcarPaginaAtual(janela)
 }
 
 function marcarPaginaAtual(janela){
