@@ -91,4 +91,11 @@ router.get('/completos', async (req, res) => {
     controller.completos(req, res, verificar.id);
 });
 
+router.post('/selecionados', async (req, res) => {
+    const verificar = await verificarToken(req, res); // ? ENVIA O CORPO DA REQUISIÇÃO A FUNÇÃO
+    if (!verificar) return res.status(400).send(false); // ? SE O TOKEN NÃO FOR VÁLIDO
+
+    controller.selecionados(req, res, verificar.id);
+})
+
 module.exports = router;

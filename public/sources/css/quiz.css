@@ -29,13 +29,10 @@
     gap: 10px;
 }
 
-.opcoes>* {
-    width: 100%;
-}
-
 .opcao {
+    width: 100%;
     display: flex;
-    margin: 10px;
+    padding: 10px;
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
@@ -183,4 +180,10 @@ button:hover {
 .amei{
     align-self: center;
     justify-self: ''center;
+}
+
+.correta {
+    background-color: rgba(34, 197, 94, 0.25);
+    border: 1px solid rgba(34, 197, 94, 0.6);
+    color: rgba(34, 197, 94, 1);
 }

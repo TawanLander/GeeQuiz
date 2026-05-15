@@ -97,6 +97,23 @@ function completos(id) {
   return bd.executar(query, [id]);
 }
 
+function selecionados(idQuiz, idUsuario){
+  let query = `
+  select quizes_completos.dthr as data, acertos.fkQuizesCompletos as tentativa, acertos.fkPerguntas as pergunta, acertos.fkOpcoes as opcao, acertos.selecionado as selecionado, opcoes.tipo as tipo 
+    from acertos 
+      join opcoes 
+        on acertos.fkOpcoes = opcoes.id 
+      join quizes_completos
+        on quizes_completos.id = acertos.fkQuizesCompletos
+    where acertos.fkQuiz = ? 
+      and acertos.fkUsuario = ?
+    group by quizes_completos.dthr, acertos.fkQuizesCompletos, acertos.fkQuizesCompletos, acertos.fkPerguntas, acertos.fkOpcoes, acertos.selecionado, opcoes.tipo
+    order by acertos.fkQuizesCompletos, acertos.fkOpcoes
+  `
+
+  return bd.executar(query, [idQuiz, idUsuario]);
+}
+
 module.exports = {
   listarInformacoes,
   listarQuizes,
@@ -108,5 +125,6 @@ module.exports = {
   deletar,
   gostei,
   terminar,
-  completos
+  completos,
+  selecionados
 };

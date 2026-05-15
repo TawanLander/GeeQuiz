@@ -249,20 +249,7 @@ function terminarQuiz() {
 }
 
 function verDetalhes() {
-  let div = document.getElementById("detalhes");
-  let msg = "";
-
-  for (let i = 0; i <= div.children.length; ++i) {
-    const perguntaAtual = div.querySelector(i);
-
-    const opcoes = perguntaAtual.querySelectorAll('input[type="checkbox"], input[type="radio"]');
-
-    for(let e = 0; e < opcoes.length; ++e){
-      // continuar o código
-    }
-  }
-
-  div.innerHTML = msg;
+  window.location.href = './analiseQuiz.html'
 }
 
 /*

@@ -15,7 +15,7 @@
     <script src="./sources/js/analiseQuiz.js" defer></script>
 
   </head>
-  <body onload="carregarElementos(), carregarQuizAnalisado(sessionStorage.getItem('quiz'))">
+  <body onload="verificarSessao('redirecionar'), carregarElementos(), carregarQuizAnalisado(sessionStorage.getItem('quiz'))">
     <header></header>
     <main>
         <div class="quiz" id="quiz"></div>

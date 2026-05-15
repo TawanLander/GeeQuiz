@@ -174,6 +174,17 @@ async function completos(req, res, id) {
     res.status(200).json(quizes);
 }
 
+async function selecionados(req, res, idUsuario) {
+    let id = req.body.fkQuiz;
+
+    if(id === undefined) return res.status(400).send('Id undefined!');
+
+    const selecionados = await quiz.selecionados(id, idUsuario)
+    if(!selecionados) return res.status(400).send(false);
+
+    res.status(200).json(selecionados);
+}
+
 module.exports = {
     listarInformacoes,
     listarQuizes,
@@ -185,5 +196,6 @@ module.exports = {
     deletar,
     gostei,
     terminar,
-    completos
+    completos,
+    selecionados
 };
