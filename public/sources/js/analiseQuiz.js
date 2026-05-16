@@ -3,6 +3,7 @@ let perguntasGlobal;
 let opcoesGlobal;
 
 async function carregarQuizAnalisado(id) {
+    sessionStorage.setItem('pergunta', 0)
     const perguntasFetch = await fetch('/quizes/perguntas', {
         method: "POST",
         headers: {
@@ -52,53 +53,42 @@ async function carregarQuizAnalisado(id) {
         tentativas[linha.tentativa - 1].push(linha)
     });
 
-    let auxiliar = [];
-    for (let i = 0; i < tentativas.length; ++i) {
-        if (tentativas[i] != undefined) auxiliar.push(tentativas[i]);
-    }
-    tentativas = auxiliar;
-
     opcoesGlobal = opcoes;
     perguntasGlobal = perguntas;
     tentativasGlobal = tentativas;
 
-    analisarTentativas(tentativas);
+    analisarTentativas();
 }
 
-function analisarTentativas(tentativas) {
+function analisarTentativas() {
     let div = document.getElementById('quiz');
-    if (tentativas.length > 1) {
+    if (tentativasGlobal.length > 1) {
         let msg = '';
         div.innerHTML = `
         <div class="tentativas">
         <h1>Identificamos mais de uma tentativa nesse quiz!</h1>
-        Escolha uma opção:
         <select id="slct-opcao" onchange="tentativaSelecionada()">
         <option selected disabled hidden>Selecione a tentativa!</option>
         </select></div>
         `
-
-        for (let i = 1; i <= tentativas.length; ++i) {
+        
+        for (let i = 1; i <= tentativasGlobal.length; ++i) {
             document.getElementById('slct-opcao').innerHTML += `<option>${i}</option>`
         }
+    } else {
+        plotarQuiz(perguntasGlobal, opcoesGlobal, tentativasGlobal[0])
     }
-
-    plotarQuiz(perguntasGlobal, opcoesGlobal, tentativasGlobal)
 }
 
 function tentativaSelecionada() {
     let selecionada = Number(document.getElementById('slct-opcao').value)
-    if (selecionada === NaN) return
-    let filtro = tentativasGlobal.filter(item => {
-        console.log(item)
-        item.tentativa = selecionada
-    });
+    if (isNaN(selecionada)) return;
 
+    let filtro = tentativasGlobal[selecionada - 1];
+
+    document.querySelector('.tentativas').remove();
     plotarQuiz(perguntasGlobal, opcoesGlobal, filtro);
 }
-
-
-
 
 function plotarQuiz(perguntas, opcoes, tentativa) {
     for (let i = 0; i < perguntas.length; ++i) {
@@ -120,9 +110,10 @@ function plotarQuiz(perguntas, opcoes, tentativa) {
 
         for (let e = 0; e < filtro.length; ++e) {
             let opcaoAtual = filtro[e];
-
-            if (tentativa.tipo === 1) {
-                if (tentativa.selecionado === 1) {
+            let respostaAtual = tentativa.find(resp => resp.opcao === opcaoAtual.id);
+            
+            if (respostaAtual.tipo === 1) {
+                if (respostaAtual.selecionado === 1) {
                     msg += `
                         <label class="opcao correta", style="cursor:default"> 
                         ${opcaoAtual.titulo} ✅ Selecionada
@@ -136,7 +127,7 @@ function plotarQuiz(perguntas, opcoes, tentativa) {
                     `;
                 }
             } else {
-                if (tentativa.selecionado === 1) {
+                if (respostaAtual.selecionado === 1) {
                     msg += `
                         <label class="opcao", style="cursor:default"> 
                         ${opcaoAtual.titulo} ❌ Selecionada
@@ -173,4 +164,26 @@ function terminarRevisao() {
     sessionStorage.removeItem('quiz');
     sessionStorage.removeItem('pergunta');
     window.location.href = './conta.html'
+}
+
+function passarPergunta(){
+    let perguntaAtual = Number(sessionStorage.getItem('pergunta'));
+    sessionStorage.setItem('pergunta', perguntaAtual+1);
+
+    let divAtual = document.getElementById(perguntaAtual);
+    let divProxima = document.getElementById(perguntaAtual + 1);
+
+    divAtual.classList.add('sumir');
+    divProxima.classList.remove('sumir');
+}
+
+function voltarPergunta(){
+    let perguntaAtual = Number(sessionStorage.getItem('pergunta'));
+    sessionStorage.setItem('pergunta', perguntaAtual-1);
+
+    let divAtual = document.getElementById(perguntaAtual);
+    let divPassada = document.getElementById(perguntaAtual - 1);
+
+    divAtual.classList.add('sumir');
+    divPassada.classList.remove('sumir');
 }

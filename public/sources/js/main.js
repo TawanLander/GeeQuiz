@@ -1,4 +1,6 @@
 function cadastrar() {
+    if(!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return;
+
     let generoValor = document.getElementById('slc-genero').value;
     if(generoAlternativo){
         generoValor = document.getElementById('ipt-outroGenero').value;
@@ -10,7 +12,7 @@ function cadastrar() {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            nome: nome.value,
+            nome: nomeFormatado,
             email: email.value,
             identidade: generoValor,
             dtNascimento: idade.value,

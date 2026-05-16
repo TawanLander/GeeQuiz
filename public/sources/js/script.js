@@ -16,12 +16,23 @@ var generoAlternativo = false;
 
 const outroGenero = document.getElementById('ipt-outroGenero');
 
+let nomeFormatado = '';
+
+let passouNoNome = false;
+
+let passouNoEmail = false;
+
+let passouNaSenha = false;
+
+let passouNaData = false;
+
+let passouNoGenero = false;
+
 function verificarNome() {
     let nomeValor = nome.value;
 
+    if(nomeValor >= 3) passouNoNome = true;
     let separar = nomeValor.split(' ');
-
-    let nomeFormatado = '';
 
     for (let i = 0; i < separar.length; ++i) {
         nomeFormatado += `${separar[i].slice(0, 1).toUpperCase() + separar[i].slice(1).toLowerCase()} `
@@ -44,6 +55,7 @@ function verificarEmail() {
             addClass(email, 'valido');
             removeClass(email, 'invalido');
             addClass(erroEmail, 'sumir');
+            passouNoEmail = true
         } else {
             addClass(email, 'invalido')
             removeClass(email, 'valido')
@@ -94,7 +106,8 @@ function verificarSenha(tipo) {
             } else if (senhaConfirmarValor.length >= senhaValor.length) {
                 addClass(senhaConfirmar, 'valido');
                 removeClass(senhaConfirmar, 'invalido');
-                addClass(erroSenhaConfirmar, 'sumir')
+                addClass(erroSenhaConfirmar, 'sumir');
+                passouNaSenha = true
             } else {
                 removeClass(senhaConfirmar, 'invalido', 'valido');
                 addClass(erroSenhaConfirmar, 'sumir')
@@ -105,7 +118,7 @@ function verificarSenha(tipo) {
 
 function ativarGenero() {
     let generoValor = genero.value;
-
+    passouNoGenero = true;
     if (generoValor === 'Outro') {
         removeClass(casoOutro, 'sumir');
         generoAlternativo = true;
@@ -146,6 +159,7 @@ function verificarData() {
         removeClass(idade, 'valido');
         addErro(erroIdade, 'A idade não pode ser maior ou igual a data atual!');
     } else {
+        passouNaData = true
         addClass(idade, 'valido');
         removeClass(idade, 'invalido');
         addClass(erroIdade, 'sumir')

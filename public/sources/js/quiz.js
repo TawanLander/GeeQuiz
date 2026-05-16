@@ -105,16 +105,18 @@ function plotarPerguntas(perguntas, opcoes) {
 }
 
 function passarPergunta(atual) {
-  contarPontuacao(); // ? FAZ A FUNÇÃO CONTAR PONTUAÇÃO
   const pergunta = sessionStorage.getItem("pergunta"); // ! PEGA A PERGUNTA ATUAL (FICA ARMAZENADA NO SESSION STORAGE)
   const erro = document.querySelectorAll(".erro"); // ! PEGA TODOS OS ELEMENTOS DA CLASSE .ERRO (FICA ABAIXO DO BOTÃO, CASO O USUÁRIO NÃO SELECIONE NADA)
-
+  
   if (document.querySelectorAll(`[name="${pergunta}"]:checked`).length <= 0) {
     // ? IF PARA VER SE O USUÁRIO SELECIONOU ALGUMA COISA, AS PERGUNTAS SÃO PLOTADAS COM O NOME DELAS SENDO O NÚMERO DA PERGUNTA
     erro[pergunta].classList.remove("sumir");
     erro[pergunta].classList.add("aparecer");
     return false; // * RETORNA FALSE INPORTANTE NA FUNÇÃO terminarQuiz();
   }
+
+  contarPontuacao(); // ? FAZ A FUNÇÃO CONTAR PONTUAÇÃO
+
   // ? CONFIRMAÇÃO SE NÃO PASSAR PELO IF, SIGNIFICA QUE SELECIONOU, CONFIRMA QUE VAI SUMIR O ERRO PARA CASO O USUÁRIO VOLTAR
   erro[pergunta].classList.remove("aparecer");
   erro[pergunta].classList.add("sumir");
@@ -148,6 +150,7 @@ function voltarPergunta(atual) {
   anterior.classList.add("aparecer");
   anterior.classList.remove("sumir");
 
+  pontuacao.pop();
   // ? CONFIRMA O SESSION STORAGE PARA A PERGUNTA ANTERIOR
   sessionStorage.setItem("pergunta", Number(pergunta) - 1);
 }

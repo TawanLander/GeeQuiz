@@ -56,10 +56,15 @@ function gostei(id) {
 }
 
 async function terminar(idQuiz, idUsuario, array) {
-  let query = "insert into quizes_completos (fkQuiz, fkUsuario) values (?, ?)";
-  const resultado = await bd.executar(query, [idQuiz, idUsuario]); // ? INSERIR OS DADOS PRIMEIRAMENTE NA TEBELA QUIZES CONCLUÍDOS, JÁ COM DATA E HORA
+  let query = `
+    select count(*) + 1 as proximo 
+    from quizes_completos 
+    where fkUsuario = ? and fkQuiz = ?
+  `;
+  const idProximoQuiz = await bd.executar(query, [idUsuario, idQuiz]); 
 
-  let id = resultado.insertId; // ! PEGA O ID DO RESULTADO EXECUTADO, IMPORTANTE PARA O INSERT ABAIXO
+  query = "insert into quizes_completos (id, fkQuiz, fkUsuario) values (?, ?, ?)";
+  const resultado = await bd.executar(query, [idProximoQuiz[0].proximo, idQuiz, idUsuario]); // ? INSERIR OS DADOS PRIMEIRAMENTE NA TEBELA QUIZES CONCLUÍDOS, JÁ COM DATA E HORA
 
   query = "insert into acertos (fkQuizesCompletos, fkQuiz, fkUsuario, fkPerguntas, fkOpcoes, selecionado) values (?, ?, ?, ?, ?, ?)";
 
@@ -76,7 +81,7 @@ async function terminar(idQuiz, idUsuario, array) {
         selecionou = 0; // * NÃO SELECIONADO
       }
 
-      await bd.executar(query, [id, idQuiz, idUsuario, fkPerguntas, fkOpcao, selecionou]); // ? AWAIT NECESSÁRIO PARA O FOR NÃO TENTAR DAR VÁRIOS INSERTS AO MESMO TEMPO
+      await bd.executar(query, [idProximoQuiz[0].proximo, idQuiz, idUsuario, fkPerguntas, fkOpcao, selecionou]); // ? AWAIT NECESSÁRIO PARA O FOR NÃO TENTAR DAR VÁRIOS INSERTS AO MESMO TEMPO
     }
   }
 }
@@ -103,11 +108,12 @@ function selecionados(idQuiz, idUsuario){
     from acertos 
       join opcoes 
         on acertos.fkOpcoes = opcoes.id 
+        and acertos.fkPerguntas = opcoes.fkPerguntas
+        and acertos.fkQuiz = opcoes.fkQuiz 
       join quizes_completos
         on quizes_completos.id = acertos.fkQuizesCompletos
     where acertos.fkQuiz = ? 
       and acertos.fkUsuario = ?
-    group by quizes_completos.dthr, acertos.fkQuizesCompletos, acertos.fkQuizesCompletos, acertos.fkPerguntas, acertos.fkOpcoes, acertos.selecionado, opcoes.tipo
     order by acertos.fkQuizesCompletos, acertos.fkOpcoes
   `
 

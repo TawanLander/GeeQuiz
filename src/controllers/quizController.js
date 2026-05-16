@@ -152,7 +152,6 @@ function terminar(req, res, idUsuario) {
     let idQuiz = req.body.fkQuiz;
     let array = req.body.array;
 
-
     if (idQuiz === undefined) {
         return res.status(400).send('Você não tem um id válido!')
     } else if (array === undefined) {
