@@ -69,11 +69,20 @@ router.post('/deletar', async (req, res) => {
     }
 });
 
-router.get('/gostei', async (req, res) => {
+router.post('/gostei', async (req, res) => {
     const verificar = await verificarToken(req, res); // ? ENVIA O CORPO DA REQUISIÇÃO A FUNÇÃO
     if (!verificar) return res.status(400).send(false); // ? SE O TOKEN NÃO FOR VÁLIDO
 
-    controller.gostei(req, res);
+    let idUsuario = verificar.id;
+    controller.gostei(req, res, idUsuario);
+});
+
+router.post('/verificarGostei', async (req, res) => {
+    const verificar = await verificarToken(req, res); // ? ENVIA O CORPO DA REQUISIÇÃO A FUNÇÃO
+    if (!verificar) return res.status(400).send(false); // ? SE O TOKEN NÃO FOR VÁLIDO
+
+    let idUsuario = verificar.id;
+    controller.verificarGostei(req, res, idUsuario);
 });
 
 router.post('/terminar', async (req, res) => {
@@ -96,6 +105,6 @@ router.post('/selecionados', async (req, res) => {
     if (!verificar) return res.status(400).send(false); // ? SE O TOKEN NÃO FOR VÁLIDO
 
     controller.selecionados(req, res, verificar.id);
-})
+});
 
 module.exports = router;

@@ -118,6 +118,18 @@ insert into opcoes (id, fkPerguntas, fkQuiz, nome) values
 select * from usuario;
 select * from opcoes;
 select * from quiz;
+select * from acertos;
+
+select quizes_completos.dthr as data, acertos.fkQuizesCompletos as tentativa, acertos.fkPerguntas as pergunta, acertos.fkOpcoes as opcao, acertos.selecionado as selecionado, opcoes.tipo as tipo 
+    from acertos 
+      join opcoes 
+        on acertos.fkOpcoes = opcoes.id 
+      join quizes_completos
+        on quizes_completos.id = acertos.fkQuizesCompletos
+    where acertos.fkQuiz = 4
+      and acertos.fkUsuario = 3
+    group by quizes_completos.dthr, acertos.fkQuizesCompletos, acertos.fkQuizesCompletos, acertos.fkPerguntas, acertos.fkOpcoes, acertos.selecionado, opcoes.tipo
+    order by acertos.fkQuizesCompletos, acertos.fkOpcoes;
 
 alter table quiz auto_increment = 0;
 insert into quiz (fkUsuario, titulo, tipo, genero, imagem) values 
@@ -221,4 +233,13 @@ primary key(idToken, fkUsuario),
 constraint fkUsuario_token foreign key (fkUsuario) references usuario(idUsuario) on delete cascade,
 token varchar(150),
 dthr datetime default now()
+);
+
+create table gostei(
+fkUsuario int,
+fkQuiz int,
+gostado tinyint,
+primary key (fkUsuario, fkQuiz),
+constraint fkUsuario_gostei foreign key (fkUsuario) references usuario(idUsuario),
+constraint fkQuiz_gostei foreign key (fkQuiz) references quiz(idQuiz)
 );

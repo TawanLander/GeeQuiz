@@ -6,12 +6,12 @@ function listarInformacoes() {
 }
 
 function listarQuizes() {
-  let query = `select quiz.*, usuario.nome, count(perguntas.id) as qtd
+  let query = `select quiz.*, count(gostei.gostado) as gostados, usuario.nome, count(perguntas.id) as qtd
     from quiz 
     left join usuario on usuario.idUsuario = quiz.fkUsuario 
     join perguntas on perguntas.fkQuiz = quiz.idQuiz
-    group by quiz.idQuiz
-    order by quiz.gostados`;
+    left join gostei on gostei.fkQuiz = quiz.idQuiz
+    group by quiz.idQuiz`;
   return bd.executar(query);
 }
 
@@ -49,10 +49,25 @@ async function deletar(id) {
   return bd.executar(query, [id]);
 }
 
-function gostei(id) {
-  let query = "update quiz set gostados = gostados + 1 where idQuiz = ?";
+function gostei(idUsuario, idQuiz) {
+  let query = "insert into gostei values (?, ?, 1)";
+  let atualizar = 'update gostei set gostado = 0 where fkUsuario = ? and fkQuiz = ?';
+  
+  const resultado = await bd.executar(query, [idUsuario, idQuiz]);
 
-  return bd.executar(query, [id]);
+  if(!resultado) return;
+
+  return resultado;
+}
+
+async function verificarGostei(idUsuario, idQuiz) {
+  let query = 'select gostado from gostei where fkUsuario = ? and fkQuiz = ?'
+
+  const resultado = await bd.executar(query, [idUsuario, idQuiz]);
+
+  let like = resultado.length === 0 ? 'Sem like' : 'Com like'
+  
+  return like;
 }
 
 async function terminar(idQuiz, idUsuario, array) {
@@ -132,5 +147,6 @@ module.exports = {
   gostei,
   terminar,
   completos,
-  selecionados
+  selecionados,
+  verificarGostei
 };

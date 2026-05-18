@@ -107,7 +107,7 @@ function plotarPerguntas(perguntas, opcoes) {
 function passarPergunta(atual) {
   const pergunta = sessionStorage.getItem("pergunta"); // ! PEGA A PERGUNTA ATUAL (FICA ARMAZENADA NO SESSION STORAGE)
   const erro = document.querySelectorAll(".erro"); // ! PEGA TODOS OS ELEMENTOS DA CLASSE .ERRO (FICA ABAIXO DO BOTÃO, CASO O USUÁRIO NÃO SELECIONE NADA)
-  
+
   if (document.querySelectorAll(`[name="${pergunta}"]:checked`).length <= 0) {
     // ? IF PARA VER SE O USUÁRIO SELECIONOU ALGUMA COISA, AS PERGUNTAS SÃO PLOTADAS COM O NOME DELAS SENDO O NÚMERO DA PERGUNTA
     erro[pergunta].classList.remove("sumir");
@@ -238,10 +238,10 @@ function terminarQuiz() {
       array: pontuacao // ? PASSA O ARRAY INTEIRO DA PONTUAÇÃO REGISTRADA DURANTE O QUIZ E SALVA ISSO NO BANCO DE DADOS 
     }),
   }).then(async r => {
-      const m = await r.text();
-      
-      if(!r.ok) {
-        throw new Error(m);
+    const m = await r.text();
+
+    if (!r.ok) {
+      throw new Error(m);
     }
 
   }).catch((e) => {
@@ -255,32 +255,58 @@ function verDetalhes() {
   window.location.href = './analiseQuiz.html'
 }
 
-/*
 const coracao = document.getElementById('coracao');
 const coracaoPath = document.getElementById('coracao-path');
+let gostado = false;
 
 coracao.addEventListener('mouseenter', () => {
-    coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z');
-    coracao.style.transform = 'scale(1.05)'
+  coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z');
+  coracao.style.transform = 'scale(1.05)'
 })
 
 coracao.addEventListener('mouseleave', () => {
-    coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z');
-    coracao.style.transform = 'scale(1)'
+  coracao.style.transform = 'scale(1)'
+  if(gostado) return;
+  coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z');
 });
 
-coracao.addEventListener('click', () => {
-    fetch('/quizes/gostei', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            'token': sessionStorage.getItem('token')
-        },
-        body: JSON.stringify({
-            id: sessionStorage.getItem('quiz')
-        })
-    }).catch(e => {
-        console.log(e);
-    });
-})
-*/
+coracao.addEventListener('click', async () => {
+  const gostei = await fetch('/quizes/gostei', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      'token': sessionStorage.getItem('token')
+    },
+    body: JSON.stringify({
+      idQuiz: sessionStorage.getItem('quiz')
+    })
+  });
+
+  if (!gostei.ok) return false;
+
+  verificarGostei()
+
+  document.getElementById('confirmacao-like').classList.replace('sumir', 'aparecer');
+});
+
+async function verificarGostei() {
+  const verificar = await fetch('/quizes/verificarGostei', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      'token': sessionStorage.getItem('token')
+    },
+    body: JSON.stringify({
+      idQuiz: sessionStorage.getItem('quiz')
+    })
+  });
+
+  if (!verificar.ok) return false;
+
+  const result = await verificar.text();
+  
+  if (result === 'Com like') {
+    gostado = true;
+    coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z');
+  }
+}

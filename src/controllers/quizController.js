@@ -134,18 +134,31 @@ function deletar(req, res) {
     })
 }
 
-function gostei(req, res) {
-    let id = req.body.id;
+function gostei(req, res, idUsuario) {
+    let idQuiz = req.body.idQuiz;
 
-    if (id === undefined) {
+    if (idQuiz === undefined) {
         return res.status(400).send('Seu id está incorreto')
     }
 
-    quiz.gostei(id).then(() => {
+    quiz.gostei(idUsuario, idQuiz).then(() => {
         return res.status(200).send('Gostei Enviado')
     }).catch(e => {
         return res.status(500).json(e.sqlMessage);
     })
+}
+
+async function verificarGostei(req, res, idUsuario) {
+    let idQuiz = req.body.idQuiz;
+
+    if (idQuiz === undefined) {
+        return res.status(400).send('Seu id está incorreto')
+    }
+    const result = await quiz.verificarGostei(idUsuario, idQuiz)
+
+    if(result === 'Sem like') return res.status(200).send('Sem like')
+
+    return res.status(200).send('Com like');
 }
 
 function terminar(req, res, idUsuario) {
@@ -168,7 +181,7 @@ function terminar(req, res, idUsuario) {
 
 async function completos(req, res, id) {
     const quizes = await quiz.completos(id);
-    if(!quizes) return res.status(400).send(false);
+    if (!quizes) return res.status(400).send(false);
 
     res.status(200).json(quizes);
 }
@@ -176,10 +189,10 @@ async function completos(req, res, id) {
 async function selecionados(req, res, idUsuario) {
     let id = req.body.fkQuiz;
 
-    if(id === undefined) return res.status(400).send('Id undefined!');
+    if (id === undefined) return res.status(400).send('Id undefined!');
 
     const selecionados = await quiz.selecionados(id, idUsuario)
-    if(!selecionados) return res.status(400).send(false);
+    if (!selecionados) return res.status(400).send(false);
 
     res.status(200).json(selecionados);
 }
@@ -196,5 +209,6 @@ module.exports = {
     gostei,
     terminar,
     completos,
-    selecionados
+    selecionados,
+    verificarGostei
 };

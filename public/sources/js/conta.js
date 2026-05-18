@@ -117,6 +117,7 @@ async function pegarQuizesCompletos() {
       token: sessionStorage.getItem('token')
     }
   });
+  
   if (!pegarQuizes.ok) throw new Error(`Erro no fetch! ${pegarQuizes.status}`);
 
   const quizes = await pegarQuizes.json();

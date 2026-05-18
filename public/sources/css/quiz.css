@@ -216,3 +216,9 @@ button:hover {
     background-color: rgb(230, 230, 230);
     outline: none;
 }
+
+#confirmacao-like{
+    color: darkgreen;
+    font-weight: 400;
+    font-size: large;
+}

@@ -14,10 +14,11 @@ function obterDados() {
 async function plotarDados(r) {
     const sessao = await verificarSessao();
     const cargo = await verificarSessao('cargo');
+    const maisCurtidos = document.getElementById('mais-curtidos');
 
     const divQuizes = document.getElementById('div-quizes');
     r.forEach(item => {
-
+    
     let msg = '';
 
     if(sessao){
@@ -32,7 +33,7 @@ async function plotarDados(r) {
     <div class="content">Gênero: ${item.genero}</div>
     <div class="content">Tipo: ${item.tipo}</div>
     <div class="content">Quantidade de Perguntas: ${item.qtd}</div>
-    <div class="content">Gostados: 4</div>
+    <div class="content">Gostados: ${item.gostados}</div>
     <div class="content">Feito por: ${item.nome}</div></div>
     `
     
