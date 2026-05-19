@@ -235,6 +235,9 @@ token varchar(150),
 dthr datetime default now()
 );
 
+insert into gostei values (3, 3, 1);
+truncate table gostei;
+
 create table gostei(
 fkUsuario int,
 fkQuiz int,

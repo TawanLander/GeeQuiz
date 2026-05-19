@@ -130,7 +130,7 @@ function plotarDadosMedia(array){
                 },
                 title: {
                     display: true,
-                    text: 'Quizes Feitos por Usuário',
+                    text: 'Tentativas Feitas por Usuário',
                     align: 'center',
                     position: 'top',
                     font: {size: 24, weight: 'bold'},

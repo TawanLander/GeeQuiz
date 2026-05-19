@@ -49,19 +49,26 @@ async function deletar(id) {
   return bd.executar(query, [id]);
 }
 
-function gostei(idUsuario, idQuiz) {
-  let query = "insert into gostei values (?, ?, 1)";
-  let atualizar = 'update gostei set gostado = 0 where fkUsuario = ? and fkQuiz = ?';
-  
-  const resultado = await bd.executar(query, [idUsuario, idQuiz]);
+async function gostei(idUsuario, idQuiz) {
+  const buscar = 'select gostado from gostei where fkUsuario = ? and fkQuiz = ?'
+  const inserir = "insert into gostei values (?, ?, 1)";
+  const deletar = 'delete from gostei where fkUsuario = ? and fkQuiz = ?';
 
-  if(!resultado) return;
+  const registro = await bd.executar(buscar, [idUsuario, idQuiz]);
+
+  let resultado;
+
+  if(registro.length === 0) {
+    resultado = await bd.executar(inserir, [idUsuario, idQuiz]);
+  } else {
+    resultado = await bd.executar(deletar, [idUsuario, idQuiz]);
+  };
 
   return resultado;
 }
 
 async function verificarGostei(idUsuario, idQuiz) {
-  let query = 'select gostado from gostei where fkUsuario = ? and fkQuiz = ?'
+  let query = 'select gostado from gostei where fkUsuario = ? and fkQuiz = ? and gostado = 1'
 
   const resultado = await bd.executar(query, [idUsuario, idQuiz]);
 
