@@ -16,7 +16,6 @@ const HOST_APP = process.env.APP_HOST;
 const app = express();
 
 const usuarioRouter = require("./src/routes/usuarios");
-const avisosRouter = require("./src/routes/avisos");
 const quizRouter = require('./src/routes/quiz');
 
 app.use(express.json());
@@ -26,7 +25,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/usuarios", usuarioRouter);
-app.use("/avisos", avisosRouter);
 app.use("/quizes", quizRouter);
 
 app.listen(PORTA_APP, () => {

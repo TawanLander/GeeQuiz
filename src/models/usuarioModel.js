@@ -1,4 +1,4 @@
-var bd = require("../database/config"); // ! IMPORTA O BANCO DE DADOS PARA O ARQUIVO
+var bd = require("../database/config");
 
 function gerarToken() {
   // ! FUNÇÃO CHAMADA AO AUTENTIAR O USUÁRIO, GERA UM TOKEN ALEATÓRIO E ENVIA APENAS ELE PARA O SESSION STORAGE, IMPEDINDO O RASTREIO DE DADOS E MANIPULAÇÃO DE PERMISSÕES
@@ -86,15 +86,14 @@ function gerarToken() {
 
 async function autenticar(email, senha) {
   try {
-    // ! LOGA O USUÁRIO NO SITE
     let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
     const result = await bd.executar(query, [email, senha]);
 
-    if (result.length === 0 || result.length > 1) return false; // ! SE NÃO HOUVER RESULTADO DO SELECT OU SE HOUVER MAIS DE UM RESULTADO
+    if (result.length === 0 || result.length > 1) return false;
 
     // ! SE HOUVER APENAS 1 RESULTADO (IMPORTANTO PARA USUÁRIOS EVITAR DUPLICADOS)
-    query = "select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?"; // ! SOBRESCREVO A VARIÁVEL, AGORA PARA CONTAR QUANTOS QUIZES O USUÁRIO CONCLUIU
+    query = "select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?";
 
     const result2 = await bd.executar(query, [result[0].idUsuario]);
     if (!result2) return false;
