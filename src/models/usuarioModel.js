@@ -242,7 +242,7 @@ async function mudar(array, id) {
     let campo = array[i].campo;
     let info = array[i].info;
     let query = 'update from usuario set ? = ? where idUsuario = ?'
-
+    
     const mudar = await bd.executar(query, [campo, info, id])
   }
 

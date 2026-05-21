@@ -150,3 +150,15 @@ function redirecionarParaAnalise(id) {
 
   window.location.href = './analiseQuiz.html'
 }
+
+async function mudarValores(){
+  let div = document.querySelector('.info');
+
+  const elemento = await fetch('/mudarValores.html');
+
+  if(!elemento.ok) return false;
+
+  const res = await elemento.text();
+
+  div.innerHTML = res;
+}

@@ -26,6 +26,7 @@ app.use(cors());
 
 app.use("/usuarios", usuarioRouter);
 app.use("/quizes", quizRouter);
+app.get('/mudarValores', require('./js/mudarValores.html'));
 
 app.listen(PORTA_APP, () => {
     console.log(`
