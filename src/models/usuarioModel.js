@@ -201,7 +201,7 @@ async function verificar(token) {
   const resultado = await bd.executar(query, [token]);
   if (!resultado) return false;
 
-  query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario join token on idUsuario = fkUsuario where token = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
+  query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, date_format(dtNascimento, '%Y-%m-%d') as dtNascimento, senha, cargo FROM usuario join token on idUsuario = fkUsuario where token = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
   const usuario = await bd.executar(query, [resultado[0].token])
   if (!usuario) return false;
@@ -218,7 +218,8 @@ async function verificar(token) {
     idade: usuario[0].idade,
     senha: usuario[0].senha,
     cargo: usuario[0].cargo,
-    quizes: quiz[0].quizes_completos
+    quizes: quiz[0].quizes_completos,
+    dtNascimento: usuario[0].dtNascimento
   }
 
   return user;

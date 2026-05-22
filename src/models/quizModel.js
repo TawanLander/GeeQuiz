@@ -110,7 +110,7 @@ async function terminar(idQuiz, idUsuario, array) {
 
 function completos(id) {
   let query = `
-  select usuario.nome, quiz.titulo, quiz.tipo, quiz.imagem, quiz.genero, quiz.gostados, quiz.idQuiz as id, count(perguntas.id) as qtd
+  select usuario.nome, quiz.titulo, quiz.tipo, quiz.imagem, quiz.genero, count(gostei.gostado) as gostados, quiz.idQuiz as id, count(perguntas.id) as qtd
     from quiz 
       join quizes_completos 
         on quizes_completos.fkQuiz = quiz.idQuiz 
@@ -118,6 +118,8 @@ function completos(id) {
         on usuario.idUsuario = quiz.fkUsuario
       join perguntas
         on quiz.idQuiz = perguntas.fkQuiz
+      left join gostei
+        on gostei.fkQuiz = quiz.idQuiz
     where quizes_completos.fkUsuario = ?
     group by quiz.idQuiz;`
 

@@ -17,7 +17,7 @@ async function verificarSessao(causa) {
     if (causa === "cargo") return r.cargo;
     if (causa === "nome") return r.nome;
 
-    if (causa === "especial" && cargo === "p")
+    if (causa === "especial" && r.cargo === "p")
       return (window.location.href = "./index.html");
 
     return true;

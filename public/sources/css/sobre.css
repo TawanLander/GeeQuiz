@@ -2,12 +2,29 @@ main {
     padding: 0;
     justify-content: flex-start;
     display: grid;
-    grid-template-columns: 8% 1fr;
-    grid-template-areas: "sidebar sobre" "sidebar tema";
+    grid-template-columns: minmax(180px, 12%) 1fr;
+    grid-template-areas: "sidebar align";
+    gap: 20px;
+    padding-right: 20px;
+}
+
+a{
+    outline: none;
+    font-size: large;
+    text-decoration: none;
+    align-self: auto;
 }
 
 header .container{
     align-self: center;
+}
+
+.align{
+    grid-template-areas: align;
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    gap: 30px;
 }
 
 h1 {
@@ -16,28 +33,9 @@ h1 {
     font-weight: 800;
     margin-bottom: 10px;
 }
-h2{
-    color: var(--atencao);
-    font-weight: 800;
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--atencao);
-}
-
-a{
-    color: var(--preto-fosco);
-    outline: none;
-    font-size: large;
-    margin: 6px 0 6px 10px;
-    text-decoration: none;
-    align-self: start;
-    transition: all .5s ease;
-}
-a:hover{
-    scale: 1.1;
-    color: var(--atencao);
-}
 
 .sessao {
+    display: flex;
     box-sizing: border-box;
     align-items: center;
     width: 99%;
@@ -46,10 +44,6 @@ a:hover{
     padding: 20px;
     height: fit-content;
     box-shadow: 0 3px 7px var(--preto);
-}
-
-section:nth-child(2) {
-    display: flex;
 }
 
 .foto {
@@ -68,13 +62,52 @@ section:nth-child(2) {
     flex-direction: column;
 }
 
+.conteudo p {
+    text-align: justify;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
 .sidebar{
+    padding: 30px 15px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
     grid-area: sidebar;
     display: flex;
     flex-direction: column;
     height: 100%;
     background: var(--bgc);
-    border-right: 2px solid var(--preto);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h2 {
+    color: var(--atencao);
+    font-size: 0.825rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    padding-bottom: 5px;
+}
+
+.sidebar a{
+    align-self: stretch;
+    border-radius: 8px;
+    color: var(--preto-fosco);
+    outline: none;
+    font-size: large;
+    margin: 6px 0 6px 10px;
+    text-decoration: none;
+    align-self: start;
+    transition: all .5s ease;
+}
+.sidebar a:hover{
+    scale: 1.1;
+    color: var(--atencao);
+    padding-left: 14px
 }
 
 #sobre-min{
@@ -83,4 +116,11 @@ section:nth-child(2) {
 
 #tema{
     grid-area: tema;
+}
+
+#aprendizado{
+    grid-area: aprendizado;
+}
+#trajetoria{
+    grid-area: trajetoria;
 }

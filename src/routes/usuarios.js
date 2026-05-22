@@ -75,7 +75,8 @@ router.get("/dados", async (req, res) => {
     identidade: verificar.identidade,
     idade: verificar.idade,
     senha: verificar.senha,
-    quizes: verificar.quizes
+    quizes: verificar.quizes,
+    dtNascimento: verificar.dtNascimento
   }); // ? SE OCORRER TUDO, RETORNA O JSON USUÁRIO PARA O FRONT
 });
 

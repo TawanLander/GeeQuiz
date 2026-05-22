@@ -1,27 +1,36 @@
 <h1>Insira as Novas Informações</h1>
 <label>
     Insira seu nome:
-    <input id="ipt-nome" type="text">
+    <input autocomplete="off" placeholder="Seu nome completo" id="ipt-nome" type="text">
 </label>
 <label>
     Insira sua Data de Nascimento:
-    <input id="ipt-data" type="date">
+    <input autocomplete="off" placeholder="dd/mm/aa" id="ipt-dtNascimento" type="date">
 </label>
 <label>
     Insira seu Gênero:
-    <select id="slct-genero">
+    <select id="slct-genero" onchange="verificarOutroGenero()">
         <option selected hidden disabled>Selecione</option>
         <option>Masculino</option>
         <option>Feminino</option>
         <option>Prefiro Não Dizer</option>
         <option>Outro</option>
     </select>
+
+</label>
+<label class="sumir">
+    Especifique:
+    <input autocomplete="off" type="text" id="ipt-outroGenero">
 </label>
 <label>
     Insira seu email:
-    <input id="ipt-email" type="text">
+    <input autocomplete="off" id="ipt-email" type="text" placeholder="exemplo@email.com">
 </label>
 <label>
     Insira sua senha:
-    <input id="ipt-senha" type="text">
+    <input autocomplete="off" id="ipt-senha" type="password" placeholder="***********">
+</label>
+<label>
+    Confirme sua senha:
+    <input autocomplete="off" id="ipt-confirmarSenha" type="password" placeholder="***********">
 </label>
