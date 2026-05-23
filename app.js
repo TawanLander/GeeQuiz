@@ -17,6 +17,7 @@ const app = express();
 
 const usuarioRouter = require("./src/routes/usuarios");
 const quizRouter = require('./src/routes/quiz');
+const paginasRouter = require('./src/routes/paginas');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,9 +27,7 @@ app.use(cors());
 
 app.use("/usuarios", usuarioRouter);
 app.use("/quizes", quizRouter);
-app.get('/mudarValores', (req, res) => {
-    res.sendFile(__dirname + '/public/sources/js/mudarValores.html');
-});
+app.use('/paginas', paginasRouter);
 
 app.listen(PORTA_APP, () => {
     console.log(`

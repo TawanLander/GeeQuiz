@@ -13,15 +13,7 @@ async function plotarDadosUsuario() {
 
   const informacao = await dados.json(); // ? SE O FETCH DER CERTO, PEGA OS VALORES, TRANSFORMA EM JSON E APLICA NA PÁGINA
 
-  informacoes = {
-    nome: informacao.nome,
-    identidade: informacao.identidade,
-    quizes: informacao.quizes,
-    senha: informacao.senha,
-    email: informacao.email,
-    idade: informacao.idade,
-    dtNascimento: informacao.dtNascimento
-  }; // ? ARMAZENA A SENHA NUMA VARIÁVEL GLOBAL | NÃO HÁ IMPORTÂNCIA DE MOSTRAR A SENHA, JÁ QUE ELA É DO PRÓPRIO USUÁRIO
+  informacoes = informacao; // ? ARMAZENA A SENHA NUMA VARIÁVEL GLOBAL | NÃO HÁ IMPORTÂNCIA DE MOSTRAR A SENHA, JÁ QUE ELA É DO PRÓPRIO USUÁRIO
 
   document.getElementById("bd-nome").innerHTML = informacao.nome;
   document.getElementById("bd-genero").innerHTML = informacao.identidade;
@@ -165,7 +157,7 @@ function redirecionarParaAnalise(id) {
 async function mudarValores() {
   let div = document.querySelector(".info");
 
-  const elemento = await fetch("/mudarValores");
+  const elemento = await fetch("/paginas/mudarValores");
 
   if (!elemento.ok) return false;
 
@@ -193,10 +185,12 @@ async function mudarValores() {
 
 function verificarOutroGenero(){
   let genero = document.getElementById("slct-genero");
-  let outroGenero = document.querySelector('.sumir');
+  let outroGenero = document.getElementById('label-outroGenero');
 
   if(genero.value === 'Outro'){
     outroGenero.classList.replace('sumir', 'aparecer');
+  } else {
+    outroGenero.classList.replace('aparecer', 'sumir');
   }
 }
 
