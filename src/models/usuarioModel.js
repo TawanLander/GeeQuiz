@@ -237,16 +237,18 @@ function deslogar(id) {
   return bd.executar(query, [id]);
 }
 
-async function mudar(array, id) {
+async function mudar(nome, dtNascimento, identidade, email, senha, id) {
+  let query = `update usuario set 
+  nome = ?,
+  dtNascimento = ?,
+  identidade = ?,
+  email = ?,
+  senha = ?
+  where idUsuario = ?`
 
-  for (let i = 0; i < array.length; ++i) {
-    let campo = array[i].campo;
-    let info = array[i].info;
-    let query = 'update from usuario set ? = ? where idUsuario = ?'
-    
-    const mudar = await bd.executar(query, [campo, info, id])
-  }
-
+  const resultado = await bd.executar(query, [nome, dtNascimento, identidade, email, senha, id]);
+  
+  return resultado ? true : false
 }
 
 module.exports = {

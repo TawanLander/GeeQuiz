@@ -85,7 +85,7 @@ router.post('/mudar', async (req, res) => {
   const verificar = await verificarToken(req, res);
     if(!verificar) return res.status(400).send(false);
 
-  usuarioController.mudar(req, res);
+  usuarioController.mudar(req, res, verificar.id);
 });
 
 module.exports = router;

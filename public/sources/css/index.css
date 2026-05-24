@@ -42,6 +42,11 @@
     color: var(--cor-texto-quiz)
 }
 
+b{
+    font-size: x-large;
+    font-weight: 650;
+}
+
 .carroussel {
     margin: 0 auto 100px auto;
     width: 97%;
@@ -62,7 +67,7 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    animation: girar 20s infinite linear;
+    animation: girar 30s infinite linear;
     padding-right: 1rem;
 }
 
@@ -70,7 +75,7 @@
     display: flex;
     flex-direction: row !important;
     padding: .3em;
-    flex: 0 0 12em;
+    flex: 0 0 15em;
     height: 6em;
     background: var(--preto-fosco);
     font-size: 3em;
@@ -99,7 +104,7 @@
     }
 
     to {
-        translate: 0;
+        translate: -120%;
     }
 }
 

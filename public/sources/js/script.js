@@ -1,34 +1,14 @@
-const email = document.getElementById('ipt-email');
-const senha = document.getElementById('ipt-senha');
-const nome = document.getElementById('ipt-nome');
-const genero = document.getElementById('slc-genero');
-const idade = document.getElementById('ipt-idade');
-const senhaConfirmar = document.getElementById('ipt-senhaConfirmar');
-const confirmacao = document.getElementById('confirmacao');
-const casoOutro = document.getElementById('casoOutro');
-
-const erroEmail = document.getElementById('erro-email');
-const erroSenha = document.getElementById('erro-senha');
-const erroIdade = document.getElementById('erro-idade');
-const erroSenhaConfirmar = document.getElementById('erro-senhaConfirmar');
-
-var generoAlternativo = false;
-
-const outroGenero = document.getElementById('ipt-outroGenero');
-
+let generoAlternativo = false;
 let nomeFormatado = '';
-
 let passouNoNome = false;
-
 let passouNoEmail = false;
-
 let passouNaSenha = false;
-
 let passouNaData = false;
-
 let passouNoGenero = false;
 
+
 function verificarNome() {
+    const nome = document.getElementById('ipt-nome');
     let nomeValor = nome.value;
 
     if(nomeValor >= 3) passouNoNome = true;
@@ -40,6 +20,8 @@ function verificarNome() {
 }
 
 function verificarEmail() {
+    const email = document.getElementById('ipt-email');
+    const erroEmail = document.getElementById('erro-email');
     let emailValor = email.value;
 
     let partes = emailValor.split('@');
@@ -67,6 +49,11 @@ function verificarEmail() {
 }
 
 function verificarSenha(tipo) {
+    const senha = document.getElementById('ipt-senha');
+    const senhaConfirmar = document.getElementById('ipt-senhaConfirmar') || document.getElementById('ipt-confirmarSenha');
+    const erroSenha = document.getElementById('erro-senha');
+    const erroSenhaConfirmar = document.getElementById('erro-senhaConfirmar');
+
     let senhaValor = senha.value;
     if (tipo != 1) {
         if (senhaValor.length > 0) {
@@ -117,6 +104,9 @@ function verificarSenha(tipo) {
 }
 
 function ativarGenero() {
+    const genero = document.getElementById('slc-genero');
+    const casoOutro = document.getElementById('casoOutro');
+
     let generoValor = genero.value;
     passouNoGenero = true;
     if (generoValor === 'Outro') {
@@ -129,6 +119,8 @@ function ativarGenero() {
 }
 
 function verificarGenero() {
+    const outroGenero = document.getElementById('ipt-outroGenero');
+
     let outroGeneroValor = outroGenero.value;
 
     if (outroGeneroValor.length <= 2) {
@@ -141,11 +133,13 @@ function verificarGenero() {
 }
 
 function verificarData() {
+    const idade = document.getElementById('ipt-idade') || document.getElementById('ipt-dtNascimento');
+    const erroIdade = document.getElementById('erro-idade');
+
     const data = new Date();
     const dataPassada = new Date(1920, 0, 1);
 
     let dataPassadaFormatada = `${dataPassada.getFullYear()}-${String(dataPassada.getMonth() + 1).padStart(2, '0')}-${dataPassada.getDate()}`;
-
     let dataFormatada = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${data.getDate()}`;
 
     let idadeValor = idade.value;
@@ -166,34 +160,38 @@ function verificarData() {
     }
 }
 
-function limparClass() { // FUNÇÃO QUE LIMPA A CLASSE DE INVÁLIDO OU VÁLIDO APÓS SAIR DO INPUT
-    // REMOVENDO CLASSES DO EMAIL
-    if (erroEmail.classList.contains('sumir')) {
+function limparClass() {
+    const email = document.getElementById('ipt-email');
+    const senha = document.getElementById('ipt-senha');
+    const senhaConfirmar = document.getElementById('ipt-senhaConfirmar') || document.getElementById('ipt-confirmarSenha');
+    const outroGenero = document.getElementById('ipt-outroGenero');
+    const erroEmail = document.getElementById('erro-email');
+    const erroSenha = document.getElementById('erro-senha');
+    const erroIdade = document.getElementById('erro-idade');
+    const erroSenhaConfirmar = document.getElementById('erro-senhaConfirmar');
+
+    if (erroEmail?.classList.contains('sumir')) {
         removeClass(email, 'valido', 'invalido');
     }
-    // REMOVENDO CLASSES DA SENHA
-    if (erroSenha.classList.contains('sumir')) {
+    if (erroSenha?.classList.contains('sumir')) {
         removeClass(senha, 'invalido', 'valido');
     }
-    // REMOVENDO AS CLASSES DA CONFIRMAÇÃO DE SENHA
-    if (erroSenhaConfirmar.classList.contains('sumir')) {
+    if (erroSenhaConfirmar?.classList.contains('sumir')) {
         removeClass(senhaConfirmar, 'invalido', 'valido');
     }
-    // REMOVENDO AS CLASSES DA DATA
-    if (erroIdade.classList.contains('sumir')) {
+    if (erroIdade?.classList.contains('sumir')) {
         removeClass(erroIdade, 'invalido', 'valido');
     }
-    // REMOVENDO AS CLASSES DA INPUT DE OUTRO GENERO (VALOR BOOLEANO) TRUE = TEM GENERO DIVERSO
     if (generoAlternativo) {
         removeClass(outroGenero, 'invalido', 'valido');
     }
 }
 
-function removeClass(i, ...c) { // FUNÇÃO QUE REMOVE AS CLASSES DO DO ELEMENTO PASSADO
+function removeClass(i, ...c) {
     i.classList.remove(...c)
 }
 
-function addClass(i, ...c) { // FUNÇÃO QUE ADICIONAS CLASSES NO ELEMENTO PASSADO
+function addClass(i, ...c) {
     i.classList.add(...c)
 }
 

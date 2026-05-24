@@ -1,11 +1,13 @@
 <h1>Insira as Novas Informações</h1>
 <label>
     Insira seu nome:
-    <input autocomplete="off" placeholder="Seu nome completo" id="ipt-nome" type="text">
+    <input autocomplete="off" placeholder="Seu nome completo" id="ipt-nome" type="text" oninput="verificarNome()" onblur="limparClass()">
+    <div id="erro-nome" class="erro sumir"></div>
 </label>
 <label>
     Insira sua Data de Nascimento:
-    <input autocomplete="off" placeholder="dd/mm/aa" id="ipt-dtNascimento" type="date">
+    <input autocomplete="off" placeholder="dd/mm/aa" id="ipt-dtNascimento" type="date" oninput="verificarData()" onblur="limparClass()">
+    <div id="erro-idade" class="erro sumir"></div>
 </label>
 <label>
     Insira seu Gênero:
@@ -20,17 +22,20 @@
 </label>
 <label class="sumir" id="label-outroGenero">
     Especifique:
-    <input autocomplete="off" type="text" id="ipt-outroGenero">
+    <input autocomplete="off" type="text" id="ipt-outroGenero" oninput="verificarGenero()" onblur="limparClass()">
 </label>
 <label>
     Insira seu email:
-    <input autocomplete="off" id="ipt-email" type="text" placeholder="exemplo@email.com">
+    <input autocomplete="off" id="ipt-email" type="text" placeholder="exemplo@email.com" oninput="verificarEmail()" onblur="limparClass()">
+    <div id="erro-email" class="erro sumir">Email está incorreto! Verifique a digitação.</div>
 </label>
 <label>
     Insira sua senha:
-    <input autocomplete="off" id="ipt-senha" type="password" placeholder="***********">
+    <input autocomplete="off" id="ipt-senha" type="password" placeholder="***********" oninput="verificarSenha()" onblur="limparClass()">
+    <div id="erro-senha" class="erro sumir"></div>
 </label>
 <label>
     Confirme sua senha:
-    <input autocomplete="off" id="ipt-confirmarSenha" type="password" placeholder="***********">
+    <input autocomplete="off" id="ipt-confirmarSenha" type="password" placeholder="***********" oninput="verificarSenha(1)" onblur="limparClass()">
+    <div id="erro-senhaConfirmar" class="erro sumir">As senhas devem ser iguais</div>
 </label>

@@ -153,8 +153,49 @@ function redirecionarParaAnalise(id) {
 
   window.location.href = "./analiseQuiz.html";
 }
+let ativo = false;
 
-async function mudarValores() {
+function mudarValores() {
+  if (ativo) {
+    salvarValores();
+    ativo = false;
+    return;
+  }
+
+  ativarInputs();
+  ativo = true;
+}
+
+async function salvarValores() {
+  if(!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return;
+
+  let nome = document.getElementById("ipt-nome").value;
+  let data = document.getElementById("ipt-dtNascimento").value;
+  let genero = document
+    .getElementById("label-outroGenero")
+    .classList.contains("sumir")
+    ? document.getElementById("slct-genero").value
+    : document.getElementById("ipt-outroGenero").value;
+  let email = document.getElementById("ipt-email").value;
+  let senha = document.getElementById("ipt-senha").value;
+
+  const resultado = await fetch("/usuarios/mudar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      token: sessionStorage.getItem("token"),
+    },
+    body: JSON.stringify({
+      nome, data, genero, email, senha
+    }),
+  });
+
+  if(!resultado.ok) return false;
+
+  reverterInputs();
+}
+
+async function ativarInputs() {
   let div = document.querySelector(".info");
 
   const elemento = await fetch("/paginas/mudarValores");
@@ -173,39 +214,54 @@ async function mudarValores() {
   let genero = document.getElementById("slct-genero");
   let confirmar = document.getElementById("ipt-confirmarSenha");
 
-  nome.value = informacoes.nome
-  email.value = informacoes.email
-  senha.value = informacoes.senha
-  confirmar.value = informacoes.senha
-  genero.value = informacoes.identidade
-  data.value = informacoes.dtNascimento
+  nome.value = informacoes.nome;
+  email.value = informacoes.email;
+  senha.value = informacoes.senha;
+  confirmar.value = informacoes.senha;
+  genero.value = informacoes.identidade;
+  data.value = informacoes.dtNascimento;
 
-  manusearInputs();
+  const inputs = document.querySelector(".info").querySelectorAll("input");
+
+  inputs.forEach((input) => {
+
+    input.addEventListener("click", (event) => {
+      event.target.value = "";
+    });
+
+    input.addEventListener("blur", (event) => {
+      let informacao = event.target.id.replace("ipt-", "");
+      if (informacao === "confirmarSenha") informacao = "senha";
+      if(informacao === 'outroGenero') return;
+
+      if (event.target.value.trim() === "")
+        event.target.value = informacoes[informacao];
+    });
+  });
 }
 
-function verificarOutroGenero(){
+function verificarOutroGenero() {
   let genero = document.getElementById("slct-genero");
-  let outroGenero = document.getElementById('label-outroGenero');
+  let outroGenero = document.getElementById("label-outroGenero");
 
-  if(genero.value === 'Outro'){
-    outroGenero.classList.replace('sumir', 'aparecer');
+  if (genero.value === "Outro") {
+    outroGenero.classList.replace("sumir", "aparecer");
   } else {
-    outroGenero.classList.replace('aparecer', 'sumir');
+    outroGenero.classList.replace("aparecer", "sumir");
   }
 }
 
-function manusearInputs(){
-  const inputs = document.querySelector('.info').querySelectorAll('input');
+async function reverterInputs(){
   
-  inputs.forEach(input => {
-    input.addEventListener('click', (event) => {
-      event.target.value = '';
-    })
-    input.addEventListener('blur', (event) => {
-      let informacao = event.target.id.replace('ipt-', '');
-      if(informacao === 'confirmarSenha') informacao = 'senha';
+  let div = document.querySelector(".info");
+  
+  const elemento = await fetch("/paginas/reverterValores");
+  
+  if (!elemento.ok) return false;
+  
+  const res = await elemento.text();
+  
+  div.innerHTML = res;
 
-      if(event.target.value.trim() === '') event.target.value = informacoes[informacao]
-    })
-  })
+  await plotarDadosUsuario();
 }

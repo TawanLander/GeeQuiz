@@ -109,11 +109,15 @@ async function deslogar(req, res, id) {
     }
 }
 
-async function mudar(req, res) {
+async function mudar(req, res, id) {
+    let nome = req.body.nome;
+    let dtNascimento = req.body.data;
+    let identidade = req.body.genero;
+    let email = req.body.email;
+    let senha = req.body.senha;
     try{
-        const mudar = await usuarioModel.mudar(param);
+        const mudar = await usuarioModel.mudar(nome, dtNascimento, identidade, email, senha, id);
         if(!mudar) return res.status(400).send(false);
-
         res.status(200).send('Informações Atualizadas!');
     }catch(e){
         console.log(e)
