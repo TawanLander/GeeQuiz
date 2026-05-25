@@ -55,6 +55,7 @@ b{
     overflow-x: auto;
     border-radius: 5px;
     user-select: none;
+    padding: 2px 0;
 }
 
 .carroussel::-webkit-scrollbar {
@@ -140,4 +141,8 @@ img {
     height: 50px;
     background-color: rgba(245, 84, 84, 0.103);
     border-radius: 10px;
+}
+
+.imagem-cards{
+    border: 1px solid var(--cor-texto);
 }

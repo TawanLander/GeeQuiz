@@ -67,8 +67,9 @@ header {
 }
 
 header .logo {
-    margin-left: 15px;
-    width: 30%;
+    height: 60px;
+    width: auto;
+    mix-blend-mode: screen;
 }
 
 header img {

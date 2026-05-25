@@ -15,6 +15,11 @@ a{
     align-self: auto;
 }
 
+.conteudo em{
+    font-style: italic;
+    font-size: inherit;
+}
+
 header .container{
     align-self: center;
 }

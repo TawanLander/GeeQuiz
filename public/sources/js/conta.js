@@ -155,9 +155,16 @@ function redirecionarParaAnalise(id) {
 }
 let ativo = false;
 
-function mudarValores() {
+passouNoNome = true;
+passouNoEmail = true;
+passouNaSenha = true;
+passouNaData = true;
+passouNoGenero = true;
+
+async function mudarValores() {
   if (ativo) {
-    salvarValores();
+    const resultado = await salvarValores()
+    if(!resultado) return;
     ativo = false;
     return;
   }
@@ -167,7 +174,7 @@ function mudarValores() {
 }
 
 async function salvarValores() {
-  if(!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return;
+  if(!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return false;
 
   let nome = document.getElementById("ipt-nome").value;
   let data = document.getElementById("ipt-dtNascimento").value;
@@ -193,6 +200,7 @@ async function salvarValores() {
   if(!resultado.ok) return false;
 
   reverterInputs();
+  return true;
 }
 
 async function ativarInputs() {

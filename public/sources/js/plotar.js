@@ -27,7 +27,7 @@ async function plotarDados(r) {
       if (sessao) {
         m += `<div id="${item.idQuiz}" class="cards" onclick="salvarDados(${item.idQuiz})">`;
       } else {
-        m += `<div class="quiz" onclick="window.location='./login.html'">`;
+        m += `<div class="cards" onclick="window.location='./login.html'">`;
       }
       m += `
         <img src="${item.imagem}" class="imagem-cards"/>

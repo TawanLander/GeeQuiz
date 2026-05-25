@@ -12,6 +12,7 @@ function verificarNome() {
     let nomeValor = nome.value;
 
     if(nomeValor >= 3) passouNoNome = true;
+    else passouNoNome = false;
     let separar = nomeValor.split(' ');
 
     for (let i = 0; i < separar.length; ++i) {
@@ -90,6 +91,7 @@ function verificarSenha(tipo) {
                 addClass(senhaConfirmar, 'invalido');
                 removeClass(senhaConfirmar, 'valido');
                 removeClass(erroSenhaConfirmar, 'sumir');
+                passouNaSenha = false;
             } else if (senhaConfirmarValor.length >= senhaValor.length) {
                 addClass(senhaConfirmar, 'valido');
                 removeClass(senhaConfirmar, 'invalido');
@@ -98,6 +100,7 @@ function verificarSenha(tipo) {
             } else {
                 removeClass(senhaConfirmar, 'invalido', 'valido');
                 addClass(erroSenhaConfirmar, 'sumir')
+                passouNaSenha = false;
             }
         }
     }
@@ -126,9 +129,11 @@ function verificarGenero() {
     if (outroGeneroValor.length <= 2) {
         addClass(outroGenero, 'invalido')
         removeClass(outroGenero, 'valido')
+        passouNoGenero = false;
     } else {
         addClass(outroGenero, 'valido')
         removeClass(outroGenero, 'invalido')
+        passouNoGenero = true
     }
 }
 
@@ -148,10 +153,12 @@ function verificarData() {
         addClass(idade, 'invalido');
         removeClass(idade, 'valido');
         addErro(erroIdade, 'A ano inserido não pode ser anterior a 1920!');
+        passouNaData = false;
     } else if (idadeValor >= dataFormatada || idadeValor.length > 10) {
         addClass(idade, 'invalido');
         removeClass(idade, 'valido');
         addErro(erroIdade, 'A idade não pode ser maior ou igual a data atual!');
+        passouNaData = false;
     } else {
         passouNaData = true
         addClass(idade, 'valido');

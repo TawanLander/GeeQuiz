@@ -8,14 +8,13 @@
 
 input,
 select {
-    width: 70%;
+    padding: 6px 8px;
+    border: 2px solid var(--preto-fosco);
+    border-radius: 8px;
+    background-color: var(--bgc);
+    text-align: left;
+    width: 100%;
     text-align: center;
-    border: 2px solid transparent;
-    border-radius: 5px;
-    transition: all .5s ease;
-    text-decoration: none;
-    background-color: rgb(230, 230, 230);
-    outline: none;
 }
 
 input:focus {
