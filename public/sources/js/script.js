@@ -57,6 +57,29 @@ function verificarSenha(tipo) {
 
     let senhaValor = senha.value;
     if (tipo != 1) {
+        const testarNumero = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let temNumero = false;
+        const testarEspecial = ['!', '@', '#', '$', '%', '&', '*', '.'];
+        let temEspecial = false;
+
+        for(let i = 0; i < senhaValor.length; ++i){
+            let atual = senhaValor[i];
+            for(let e = 0; e < testarNumero.length; ++e){
+                if(Number(atual) === testarNumero[e]){
+                    temNumero = true;
+                    break;
+                }
+            }
+
+            for(let e = 0; e < testarEspecial.length; ++e){
+                if(atual === testarEspecial[e]){
+                    temEspecial = true;
+                    break;
+                }
+            }
+            if(temEspecial && temNumero) break;
+        }
+
         if (senhaValor.length > 0) {
             if (senhaValor.length < 10) {
                 addErro(erroSenha, `Senha menor que 10 dígitos!`)
@@ -66,7 +89,7 @@ function verificarSenha(tipo) {
                 addErro(erroSenha, `Senha precisa contar ao menos uma letra maiúscula ou minúscula!`);
                 addClass(senha, 'invalido');
                 removeClass(senha, 'valido');
-            } else if (!/[!@#$%&*.]/.test(senhaValor)) {
+            } else if (!temEspecial) {
                 addErro(erroSenha, `Senha precisa conter algarismos especiais!`);
                 addClass(senha, 'invalido');
                 removeClass(senha, 'valido');
@@ -74,7 +97,7 @@ function verificarSenha(tipo) {
                 addErro(erroSenha, `Senha não pode conter espaço!`);
                 addClass(senha, 'invalido');
                 removeClass(senha, 'valido');
-            } else if (!/[123456789]/.test(senhaValor)) {
+            } else if (!temNumero) {
                 addErro(erroSenha, 'Senha precisa conter algum número')
                 addClass(senha, 'invalido');
                 removeClass(senha, 'valido');

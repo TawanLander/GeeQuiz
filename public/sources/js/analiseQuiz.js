@@ -49,7 +49,7 @@ async function carregarQuizAnalisado(id) {
     let tentativas = [];
 
     opcoesSelecionadas.forEach(linha => {
-        if (!tentativas[linha.tentativa - 1]) tentativas[linha.tentativa - 1] = [];
+        if (!tentativas[linha.tentativa - 1]) tentativas[linha.tentativa - 1] = []; // ? Se ainda não existir tentativa criada ele cria uma nessa posição do array
         tentativas[linha.tentativa - 1].push(linha)
     });
 

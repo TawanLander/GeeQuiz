@@ -1,9 +1,7 @@
 var bd = require("../database/config");
 
 function gerarToken() {
-  // ! FUNÇÃO CHAMADA AO AUTENTIAR O USUÁRIO, GERA UM TOKEN ALEATÓRIO E ENVIA APENAS ELE PARA O SESSION STORAGE, IMPEDINDO O RASTREIO DE DADOS E MANIPULAÇÃO DE PERMISSÕES
 
-  // ? BASICAMENTE GERO TRÊS VALORES ALEATÓRIOS, OS DOIS PRIMEIROS REALIZARAM UMA OPERAÇÃO, QUE É DEFINIDA PELO VALOR DO TERCEIRO
   const t1 = Math.random();
   const t2 = Math.random();
 
@@ -28,7 +26,6 @@ function gerarToken() {
     return valor.slice(0, posicao) + caracter + valor.slice(posicao);
   }
 
-  // ? TODOS ESSES ARRAYS REPRESENTAM POSSÍVEIS CARACTERES A SEREM INSERIDOS NO TOKEN
   const letrasMaiusculas = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
   const letrasMinusculas = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
@@ -86,13 +83,12 @@ function gerarToken() {
 
 async function autenticar(email, senha) {
   try {
-    let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
+    let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; 
 
     const result = await bd.executar(query, [email, senha]);
 
     if (result.length === 0 || result.length > 1) return false;
 
-    // ! SE HOUVER APENAS 1 RESULTADO (IMPORTANTO PARA USUÁRIOS EVITAR DUPLICADOS)
     query = "select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?";
 
     const result2 = await bd.executar(query, [result[0].idUsuario]);

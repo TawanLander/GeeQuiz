@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const usuarioController = require("../controllers/usuarioController");
-const array = require("../models/usuarioModel");
-
 
 async function verificarToken(req, res) { // ! FUNÇÃO PADRÃO PARA VERIFICAR O TOKEN DO USUÁRIO! PEGA O REQ E RES DA REQUISIÇÃO PAI E BUSCA PELO TOKEN, E PELO USUÁRIO, RETORNA UM ARRAY COM O RESULTADO DA BUSCA (TRUE || FALSE) E O USUÁRIO;
   const token = req.headers["token"]; // ? PEGA O TOKEN PELA HEADER DA REQUISIÇÃO
