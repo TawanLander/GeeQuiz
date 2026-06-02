@@ -59,7 +59,7 @@ header {
     background-color: var(--preto);
     color: var(--cor-texto);
     width: 100%;
-    height: 60px;
+    height: 70px;
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
@@ -67,15 +67,15 @@ header {
 }
 
 header .logo {
-    height: 60px;
+    height: 100%;
     width: auto;
-    mix-blend-mode: screen;
+    margin-left: 25px;
 }
 
 header img {
+    object-fit: cover;
     height: 100%;
     width: 100%;
-    object-fit: cover;
 }
 
 header .container {

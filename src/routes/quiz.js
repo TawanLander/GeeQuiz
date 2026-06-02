@@ -28,11 +28,11 @@ router.post('/cadastrar/quiz', async (req, res) => { // ? ROTA PARA CADASTRAR SE
 });
 
 // todo NEM PERGUNTAS NEM OPÇÕES PRECISAM DE TOKEN PORQUE IMPLICA QUE SE HÁ UM QUIZ, O TOKEN JÁ FOI VERIFICADO.
-router.post('/cadastrar/perguntas', async (req, res) => { // ? ROTA PARA CADASTRAR AS PERGUNTAS // 
+router.post('/cadastrar/perguntas', (req, res) => { // ? ROTA PARA CADASTRAR AS PERGUNTAS // 
     controller.cadastrarPerguntas(req, res);
 });
 
-router.post('/cadastrar/opcoes', async (req, res) => { // ? ROTA PARA CADASTRAR AS OPCOES // 
+router.post('/cadastrar/opcoes', (req, res) => { // ? ROTA PARA CADASTRAR AS OPCOES // 
     controller.cadastrarOpcoes(req, res);
 });
 

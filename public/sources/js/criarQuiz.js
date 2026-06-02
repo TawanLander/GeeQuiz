@@ -160,30 +160,39 @@ function salvarPergunta() {
     if (pergunta.value.length < 10) { // VERIFICA SE O TAMANHO DO TÍTUL ODA PERGUNTA É MAIOR QUE 10
         erro.innerHTML = 'O título deve conter ao menos 10 caracteres'
         erro.classList.remove('sumir');
+        return false;
     } else if (imagem.value === '') { // VERIFICA SE O INPUT DA IMAGEM NÃO É NULO (ARRUMAREI DEPOIS PARA VER SE A IMAGEM REALMENTE CARREGA)
         erro.innerHTML = 'Deve haver alguma imagem na pergunta'
         erro.classList.remove('sumir');
+        return false;
     } else if (opcao[0].value.length <= 2) { // ENTRA NOS PARÂMETROS DE VERIFICAÇÃO DOS INPUTS OBRIGATÓRIOS (OS 3 PRIMEIROS)
         erro.innerHTML = 'A 1º opção deve ser preenchida com ao menos 2 caracteres'
         erro.classList.remove('sumir');
+        return false;
     } else if (opcao[1].value.length <= 2) {
         erro.innerHTML = 'A 2º opção deve ser preenchida com ao menos 2 caracteres'
         erro.classList.remove('sumir');
+        return false;
     } else if (opcao[2].value.length <= 2) {
         erro.innerHTML = 'A 3º opção deve ser preenchida com ao menos 2 caracteres'
         erro.classList.remove('sumir');
+        return false;
     } else if (!label1.classList.contains('sumir') && opcao[3].value.length <= 2) { // ENTRA NOS PARÂMETROS DE VERIFICAÇÃO DOS INPUTS OPCIONAIS (OS 3 ÚLTIMOS), VẼ SE ELES NÃO TEM A CLASSE "SUMIR" POIS SIGNIFICA QUE NÃO ESTARIAM SENDO USADOS;
         erro.innerHTML = 'A 4º opção deve ser preenchida com ao menos 2 caracteres ou deve ser excluída!'
         erro.classList.remove('sumir');
+        return false;
     } else if (!label2.classList.contains('sumir') && opcao[4].value.length <= 2) {
         erro.innerHTML = 'A 5º opção deve ser preenchida com ao menos 2 caracteres ou deve ser excluída'
         erro.classList.remove('sumir');
+        return false;
     } else if (!label3.classList.contains('sumir') && opcao[5].value.length <= 2) {
         erro.innerHTML = 'A 6º opção deve ser preenchida com ao menos 2 caracteres ou deve ser excluída'
         erro.classList.remove('sumir');
+        return false;
     } else if (verdadeiros < 1) {
         erro.innerHTML = 'Ao menos uma opção deve ser a correta!'
         erro.classList.remove('sumir');
+        return false;
     } else {
         erro.classList.add('sumir');
 
@@ -247,106 +256,115 @@ function formatarTitulo() {
 }
 
 async function terminarQuiz() {
-
-    salvarPergunta();
-
-    const fetchInformacao = await fetch('/quizes/informacao',{
-        headers: {
-            'token': sessionStorage.getItem('token')
-        }
-    }).then(r => {
-        if (r.ok) {
-            return r.json()
-        } else {
-            throw new Error(`Erro no Fetch Informação! ${r.status}`);
-        }
-    });
-
-    let id = fetchInformacao[0]['id'];
-
-    const fetchQuiz = await fetch('/quizes/cadastrar/quiz', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-            'token': sessionStorage.getItem('token')
-        },
-        body: JSON.stringify({
-            id: Number(id),
-            titulo: tituloQuiz.value,
-            imagem: imgQuiz.value,
-            genero: generoQuiz.value,
-            tipo: tipoQuiz.value,
-        })
-    })
-
-    if (!fetchQuiz.ok) {
-        throw new Error(`Erro no Fetch Cadastrar Quiz! ${fetchQuiz.status}`);
+    if(salvarPergunta() === false) return false;
+    if (perguntasArray.length === 0) {
+        alert("Adicione pelo menos uma pergunta antes de terminar!");
+        return false;
     }
-
-    for (let i = 0; i < perguntasArray.length; ++i) {
-        const titulo = perguntasArray[i].titulo;
-        const imagem = perguntasArray[i].imagem;
-        const tipo = perguntasArray[i].tipo;
-        const opcoes = perguntasArray[i].opcoes;
-
-        const fetchPerguntas = await fetch('quizes/cadastrar/perguntas', {
+    
+    try{
+    
+        const fetchInformacao = await fetch('/quizes/informacao',{
+            headers: {
+                'token': sessionStorage.getItem('token')
+            }
+        }).then(r => {
+            if (r.ok) {
+                return r.json()
+            } else {
+                throw new Error(`Erro no Fetch Informação! ${r.status}`);
+            }
+        });
+    
+        let id = fetchInformacao[0]['id'];
+    
+        const fetchQuiz = await fetch('/quizes/cadastrar/quiz', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 'token': sessionStorage.getItem('token')
             },
             body: JSON.stringify({
-                id: i + 1,
-                titulo: titulo,
-                imagem: imagem,
-                tipo: tipo,
-                fkQuiz: Number(id)
+                id: Number(id),
+                titulo: tituloQuiz.value,
+                imagem: imgQuiz.value,
+                genero: generoQuiz.value,
+                tipo: tipoQuiz.value,
             })
         })
-
-        if (!fetchPerguntas.ok) {
-            throw new Error(`Erro no Fetch Cadastrar Perguntas! ${fetchPerguntas.status}`);
-            console.log(fetchPerguntas.text());
+    
+        if (!fetchQuiz.ok) {
+            throw new Error(`Erro no Fetch Cadastrar Quiz! ${fetchQuiz.status}`);
         }
-
-        for (let e = 0; e < opcoes.length; ++e) {
-            let tinyint = 0;
-
-            if(opcoes[e].verdadeiro){
-                tinyint = 1
-            };
-
-            const fetchOpcoes = await fetch('/quizes/cadastrar/opcoes', {
+    
+        for (let i = 0; i < perguntasArray.length; ++i) {
+            const titulo = perguntasArray[i].titulo;
+            const imagem = perguntasArray[i].imagem;
+            const tipo = perguntasArray[i].tipo;
+            const opcoes = perguntasArray[i].opcoes;
+    
+            const fetchPerguntas = await fetch('quizes/cadastrar/perguntas', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
                     'token': sessionStorage.getItem('token')
                 },
                 body: JSON.stringify({
-                    id: e + 1,
-                    fkPerguntas: i + 1,
-                    fkQuiz: Number(id),
-                    titulo: opcoes[e].titulo,
-                    verdadeiro: tinyint
+                    id: i + 1,
+                    titulo: titulo,
+                    imagem: imagem,
+                    tipo: tipo,
+                    fkQuiz: Number(id)
                 })
             })
-
-            if (!fetchOpcoes.ok) {
-                throw new Error(`Erro no Fetch Cadastrar Opcoes" ${fetchOpcoes.status}`);
+    
+            if (!fetchPerguntas.ok) {
+                console.log(await fetchPerguntas.text());
+                throw new Error(`Erro no Fetch Cadastrar Perguntas! ${fetchPerguntas.status}`);
             }
+    
+            for (let e = 0; e < opcoes.length; ++e) {
+                let tinyint = 0;
+    
+                if(opcoes[e].verdadeiro){
+                    tinyint = 1
+                };
+    
+                const fetchOpcoes = await fetch('/quizes/cadastrar/opcoes', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'token': sessionStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        id: e + 1,
+                        fkPerguntas: i + 1,
+                        fkQuiz: Number(id),
+                        titulo: opcoes[e].titulo,
+                        verdadeiro: tinyint
+                    })
+                });
+    
+                if (!fetchOpcoes.ok) {
+                    throw new Error(`Erro no Fetch Cadastrar Opcoes" ${fetchOpcoes.status}`);
+                }
+            }
+    
         }
-
+    
+        const confirmacao = document.getElementById('confirmacao');
+    
+        confirmacao.classList.add('aparecer');
+        confirmacao.classList.remove('sumir');
+    
+        const perguntas = document.getElementById('criar-perguntas');
+        perguntas.classList.add('sumir');
+    
+        setTimeout(() => {
+            window.location.href = './index.html'
+        }, 3000);
+    } catch(e){
+        console.error(e);
+        alert('Não foi possível salvar o quiz!')
     }
-
-    const confirmacao = document.getElementById('confirmacao');
-
-    confirmacao.classList.add('aparecer');
-    confirmacao.classList.remove('sumir');
-
-    const perguntas = document.getElementById('criar-perguntas');
-    perguntas.classList.add('sumir');
-
-    setTimeout(() => {
-        window.location.href = './index.html'
-    }, 3000);
 }

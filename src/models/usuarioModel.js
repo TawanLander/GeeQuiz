@@ -83,7 +83,7 @@ function gerarToken() {
 
 async function autenticar(email, senha) {
   try {
-    let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`; 
+    let query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, senha, cargo FROM usuario WHERE email = ? AND senha = ?;`;
 
     const result = await bd.executar(query, [email, senha]);
 
@@ -183,28 +183,19 @@ async function excluir(idUsuario) {
 }
 
 async function verificar(token) {
-  let query = `select token, 
-    case 
-      when 
-        DATE(dthr) < DATE(now()) OR 
-        MONTH(dthr) < MONTH(now()) OR 
-        HOUR(dthr) + 12 < HOUR(now()) 
-        then 'Expirado' 
-        else 'Renovado' 
-      end as situacao 
-    from token where token = ?`;
+  let query = `select token from token where token = ?`;
 
   const resultado = await bd.executar(query, [token]);
   if (!resultado) return false;
-
+  
   query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, date_format(dtNascimento, '%Y-%m-%d') as dtNascimento, senha, cargo FROM usuario join token on idUsuario = fkUsuario where token = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
-  const usuario = await bd.executar(query, [resultado[0].token])
+  const usuario = await bd.executar(query, [resultado[0].token]);
   if (!usuario) return false;
 
   query = 'select count(fkUsuario) as quizes_completos from quizes_completos where fkUsuario = ?'
   const quiz = await bd.executar(query, [usuario[0].idUsuario]);
-  if(!quiz) return false;
+  if (!quiz) return false;
 
   const user = {
     id: usuario[0].idUsuario,
@@ -217,7 +208,6 @@ async function verificar(token) {
     quizes: quiz[0].quizes_completos,
     dtNascimento: usuario[0].dtNascimento
   }
-
   return user;
 }
 
@@ -243,7 +233,7 @@ async function mudar(nome, dtNascimento, identidade, email, senha, id) {
   where idUsuario = ?`
 
   const resultado = await bd.executar(query, [nome, dtNascimento, identidade, email, senha, id]);
-  
+
   return resultado ? true : false
 }
 

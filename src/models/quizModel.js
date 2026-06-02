@@ -9,7 +9,7 @@ function listarQuizes() {
   let query = `select quiz.*, count(gostei.gostado) as gostados, usuario.nome, count(perguntas.id) as qtd
     from quiz 
     left join usuario on usuario.idUsuario = quiz.fkUsuario 
-    join perguntas on perguntas.fkQuiz = quiz.idQuiz
+    left join perguntas on perguntas.fkQuiz = quiz.idQuiz
     left join gostei on gostei.fkQuiz = quiz.idQuiz
     group by quiz.idQuiz`;
   return bd.executar(query);
@@ -157,5 +157,5 @@ module.exports = {
   terminar,
   completos,
   selecionados,
-  verificarGostei
+  verificarGostei,
 };

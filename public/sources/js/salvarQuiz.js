@@ -1,4 +1,9 @@
 function salvarDados(p) {
+    console.log(p)
+    if(typeof(p) === Object){
+        p = p[0];
+    }
+
     fetch('/quizes').then(response => {
         if (response.ok) {
             response.json().then(r => {

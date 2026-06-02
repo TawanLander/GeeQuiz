@@ -1,5 +1,5 @@
 function obterDados() {
-  fetch("/quizes").then((response) => {
+  fetch("/quizes/").then((response) => {
     if (response.ok) {
       response.json().then((r) => {
         r.reverse();
@@ -25,7 +25,7 @@ async function plotarDados(r) {
     if (curtidos <= 6) {
       curtidos++;
       if (sessao) {
-        m += `<div id="${item.idQuiz}" class="cards" onclick="salvarDados(${item.idQuiz})">`;
+        m += `<div class="cards" onclick="salvarDados(${item.idQuiz})">`;
       } else {
         m += `<div class="cards" onclick="window.location='./login.html'">`;
       }
@@ -40,8 +40,8 @@ async function plotarDados(r) {
             </div>
         </div>
      `
-     maisCurtidos.innerHTML += m;
-     maisCurtidosB.innerHTML += m;
+      maisCurtidos.innerHTML += m;
+      maisCurtidosB.innerHTML += m;
     }
 
     if (sessao) {

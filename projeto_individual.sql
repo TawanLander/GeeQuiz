@@ -237,7 +237,7 @@ dthr datetime default now()
 
 insert into gostei values (3, 3, 1);
 truncate table gostei;
-
+select * from gostei;
 create table gostei(
 fkUsuario int,
 fkQuiz int,

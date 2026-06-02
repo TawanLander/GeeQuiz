@@ -1,9 +1,9 @@
 let tentativasGlobal;
 let perguntasGlobal;
 let opcoesGlobal;
+sessionStorage.setItem('pergunta', 0)
 
 async function carregarQuizAnalisado(id) {
-    sessionStorage.setItem('pergunta', 0)
     const perguntasFetch = await fetch('/quizes/perguntas', {
         method: "POST",
         headers: {
@@ -107,7 +107,7 @@ function plotarQuiz(perguntas, opcoes, tentativa) {
           <h3>${perguntaAtual.titulo}</h3>
           <div><img src="${perguntaAtual.imagem}"></div></div>
         <div class="opcoes">`;
-
+        console.log(perguntaAtual, filtro);
         for (let e = 0; e < filtro.length; ++e) {
             let opcaoAtual = filtro[e];
             let respostaAtual = tentativa.find(resp => resp.opcao === opcaoAtual.id);

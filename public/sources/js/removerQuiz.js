@@ -18,36 +18,41 @@ function deletarQuiz() {
 
 async function remover() {
     const confirmacao = document.querySelector('.confirmacao');
+    try{
 
-    const deletar = await fetch('/quizes/deletar', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: quiz.id
-        })
-    });
-
-    if (!deletar.ok) {
-        confirmacao.innerHTML = `<h1>Erro! Tente novamente!</h1>`
+        const deletar = await fetch('/quizes/deletar', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                token: sessionStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                id: quiz.id
+            })
+        });
+    
+        if (!deletar.ok) {
+            confirmacao.innerHTML = `<h1>Erro! Tente novamente!</h1>`
+            confirmacao.classList.remove('sumir');
+    
+            setTimeout(() => {
+                confirmacao.classList.add('sumir');
+                confirmacao.innerHTML = ``
+            }, 2000)
+    
+            return;
+        }
+    
+        confirmacao.innerHTML = `<h1>Sucesso! Quiz deletado. <br> Redirecionando para a página principal!</h1>`
         confirmacao.classList.remove('sumir');
-
+        sessionStorage.removeItem('quizModel');
+    
         setTimeout(() => {
-            confirmacao.classList.add('sumir');
-            confirmacao.innerHTML = ``
-        }, 2000)
-
-        return;
+            window.location.href = './index.html'
+        }, 1500)
+    }catch(e){
+        console.error(e)
     }
-
-    confirmacao.innerHTML = `<h1>Sucesso! Quiz deletado. <br> Redirecionando para a página principal!</h1>`
-    confirmacao.classList.remove('sumir');
-    sessionStorage.removeItem('quizModel');
-
-    setTimeout(() => {
-        window.location.href = './index.html'
-    }, 3000)
 }
 
 function voltar() {

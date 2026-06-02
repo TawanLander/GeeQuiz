@@ -1,5 +1,5 @@
-// const ambiente_processo = 'producao';
-const ambiente_processo = 'desenvolvimento';
+const ambiente_processo = 'producao';
+// const ambiente_processo = 'desenvolvimento';
 
 const caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 // Acima, temos o uso do operador ternário para definir o caminho do arquivo .env

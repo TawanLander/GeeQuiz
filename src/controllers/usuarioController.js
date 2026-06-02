@@ -84,13 +84,6 @@ async function verificar(req, res, token) {
         const model = await usuarioModel.verificar(token);
         if(!model) return res.status(400).send(false);
         
-        if (model.situacao === 'Expirado') { // ? USUÁRIO CAIU NA MALHA FINA E SERÁ EXCLUÍDO
-            const deletar = await usuarioModel.deletar(token);
-
-            return false;
-        }
-        const atualizar = await usuarioModel.atualizar(token); // ? ELSE SE SITUAÇÃO VIER COMO RENOVADO
-        
         return model; // ? USUÁRIO FOI VERIFICADO COM SUCESSO
     } catch (e) {
         console.log(e);

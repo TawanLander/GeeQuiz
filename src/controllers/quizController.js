@@ -87,8 +87,8 @@ function cadastrarPerguntas(req, res) {
         return res.status(400).send('Seu fkQuiz está incorreto');
     }
 
-    quiz.cadastrarPerguntas(id, titulo, imagem, tipo, fkQuiz).then(() => {
-        return res.status(200).send('Pergunta criada')
+    quiz.cadastrarPerguntas(id, titulo, imagem, tipo, fkQuiz).then(r => {
+        return res.status(200).send('Pergunta Criada')
     }).catch(e => {
         return res.status(500).json(e.sqlMessage);
     });

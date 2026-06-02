@@ -47,7 +47,7 @@ function pegarDados() {
 }
 
 function plotarPerguntas(perguntas, opcoes) {
-  sessionStorage.setItem("pergunta", 0); // ! SALVA O NÚMERO DAS PERGUNTAS NO SESSION STORAGE DO USUÁRIO
+  sessionStorage.setItem("pergunta", 0);
 
   for (let i = 0; i < perguntas.length; ++i) {
     // ? PEGA A OPÇÃO RESPECTIVA DE CADA PERGUNTA POR MEIO DE UM FILTER
@@ -55,9 +55,8 @@ function plotarPerguntas(perguntas, opcoes) {
       (opcao) => opcao.fkPerguntas === perguntas[i].id,
     );
 
-    let msg = ""; // ! USADO PARA SALVAR O QUE SERÁ PASSADO NO HTML DEPOIS
+    let msg = "";
 
-    // ? VERIFICA SE É A PRIMEIRA PERGUNTA A SER PLOTADA, SE FOR, APARECE, SE NÃO, É PLOTADA, MAS COM A CLASSE SUMIR (DISPLAY NONE)
     if (i === 0) {
       msg += `<div id="${i}" ><div class="pergunta">`;
     } else {
@@ -69,13 +68,15 @@ function plotarPerguntas(perguntas, opcoes) {
           <div><img src="${perguntas[i].imagem}"></div></div>
         <div class="opcoes">`;
 
+    let tipoDoInput = "radio"; // ! SE SÓ HOUVER UMA OPÇÃO CORRETA O TIPO DE INPUT SERÁ RÁDIO, SE NÃO, SERÁ CHECKBOX
+    if (perguntas[i].tipo != "n") {
+      tipoDoInput = "checkbox";
+    }
     // ? OUTRO FOR, USADO PARA PLOTAR AS OPÇÕES DE CADA PERGUNTA
     for (let e = 0; e < filter.length; ++e) {
       let opcao = filter[e]; // ! PARA AGILIZAR, PEGA AS OPÇÕES JÁ FILTRADAS;
 
       // ? RADIO BUTTON - SÓ PODE TER UMA OPÇÃO ESCOLHIDA DE CADA VEZ! O NOME É O LET "I", RADIOS COM MESMO NOME NÃO PODEM SER SELECIONADOS AO MESMO TEMPO.
-      let tipoDoInput = "radio"; // ! SE SÓ HOUVER UMA OPÇÃO CORRETA O TIPO DE INPUT SERÁ RÁDIO, SE NÃO, SERÁ CHECKBOX
-      if (perguntas.tipo != "n") tipoDoInput = "checkbox";
 
       msg += `
         <label class="opcao"> 
@@ -259,18 +260,18 @@ const coracao = document.getElementById('coracao');
 const coracaoPath = document.getElementById('coracao-path');
 let gostado = false;
 
-coracao.addEventListener('mouseenter', () => {
+coracao?.addEventListener('mouseenter', () => {
   coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z');
   coracao.style.transform = 'scale(1.05)'
 })
 
-coracao.addEventListener('mouseleave', () => {
+coracao?.addEventListener('mouseleave', () => {
   coracao.style.transform = 'scale(1)'
   if (gostado) return;
   coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z');
 });
 
-coracao.addEventListener('click', async () => {
+coracao?.addEventListener('click', async () => {
   const gostei = await fetch('/quizes/gostei', {
     method: "POST",
     headers: {
@@ -311,6 +312,6 @@ async function verificarGostei() {
   } else {
     gostado = false;
     coracaoPath.setAttribute('d', 'm480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z');
-    
+
   }
 }
