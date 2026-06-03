@@ -90,29 +90,36 @@ async function plotarGraficos() {
 
   const div = document.getElementById("main");
   div.innerHTML += `
+<div class="container">
     <div class="parte">
-      <div class="info">
-          <h1 style="text-align: center;">Métricas</h1>
-          <div class="dashs">
-              <canvas id="chart-generos"></canvas>
-          </div>
-          <div class="dashs">
-              <canvas id="chart-idade"></canvas>
-          </div>
-          <div class="dashs">
-              <canvas id="chart-mediaQuizes"></canvas>
-          </div>
-          <!--<div class="dashs">
-              <canvas id="chart-perguntasPorQuiz"></canvas>
-          </div>-->
-      </div>
-  </div>
+        <h1 style="text-align: center;">Métricas</h1>
+        <div class="maior">
+            <div class="kpi"></div>
+
+            <div class="dash-redonda">
+                <div class="dashs">
+                    <canvas id="chart-generos"></canvas>
+                </div>
+            </div>
+
+            <div class="dash-colunas">
+                <div class="dashs">
+                    <canvas id="chart-mediaQuizes"></canvas>
+                </div>
+                <div class="dashs">
+                    <canvas id="chart-idade"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
   `;
   exibirDados();
 }
 
 async function pegarQuizesCompletos() {
-  const div = document.getElementById("main");
+  const div = document.getElementById("container");
 
   const pegarQuizes = await fetch("/quizes/completos", {
     headers: {
@@ -164,7 +171,7 @@ passouNoGenero = true;
 async function mudarValores() {
   if (ativo) {
     const resultado = await salvarValores()
-    if(!resultado) return;
+    if (!resultado) return;
     ativo = false;
     return;
   }
@@ -174,7 +181,7 @@ async function mudarValores() {
 }
 
 async function salvarValores() {
-  if(!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return false;
+  if (!passouNoNome || !passouNoEmail || !passouNaSenha || !passouNaData || !passouNoGenero) return false;
 
   let nome = document.getElementById("ipt-nome").value;
   let data = document.getElementById("ipt-dtNascimento").value;
@@ -197,7 +204,7 @@ async function salvarValores() {
     }),
   });
 
-  if(!resultado.ok) return false;
+  if (!resultado.ok) return false;
 
   reverterInputs();
   return true;
@@ -240,7 +247,7 @@ async function ativarInputs() {
     input.addEventListener("blur", (event) => {
       let informacao = event.target.id.replace("ipt-", "");
       if (informacao === "confirmarSenha") informacao = "senha";
-      if(informacao === 'outroGenero') return;
+      if (informacao === 'outroGenero') return;
 
       if (event.target.value.trim() === "")
         event.target.value = informacoes[informacao];
@@ -259,16 +266,16 @@ function verificarOutroGenero() {
   }
 }
 
-async function reverterInputs(){
-  
+async function reverterInputs() {
+
   let div = document.querySelector(".info");
-  
+
   const elemento = await fetch("/paginas/reverterValores");
-  
+
   if (!elemento.ok) return false;
-  
+
   const res = await elemento.text();
-  
+
   div.innerHTML = res;
 
   await plotarDadosUsuario();

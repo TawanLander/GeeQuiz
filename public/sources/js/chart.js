@@ -142,6 +142,11 @@ function plotarDadosMedia(array){
     });
 }
 
+function kip(array){
+    const div = document.querySelector('.kpi');
+    div.innerHTML = `<h1>Quiz mais curtido: </h1><span>${array[0].titulo}</span><h3>Curtidas: </h3><span>${array[0].gostei}</span>`
+}
+
 function exibirDados(){
     fetch('/usuarios/informacoes', { // ? FETCH PARA FAZER TUDO FUNCIONAR, MANDA UM TOKEN (PORQUE ESSE DADOS SÓ PODEM SER VISTOS POR UM ADMINISTRADOR DO SISTEMA)
         headers: {
@@ -154,7 +159,8 @@ function exibirDados(){
             plotarDadosGeneros(resultado[0]);
             plotarDadosIdade(resultado[1]);
             plotarDadosMedia(resultado[2]);
-    
+            kip(resultado[3]);
+
         } else {
             response.text().then(msg => {
                 console.error(msg)

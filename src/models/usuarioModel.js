@@ -169,7 +169,11 @@ async function informacoes() {
 
   const quizes = await bd.executar(query);
 
-  return [genero, faixaEtaria, quizes];
+  query = `select quiz.titulo as titulo, gostei.gostado as gostei from quiz left join gostei on quiz.idQuiz = gostei.fkQuiz where gostei.gostado = (select max(gostei.gostado) from gostei);`
+
+  const kpi = await bd.executar(query);
+
+  return [genero, faixaEtaria, quizes, kpi];
 }
 
 async function excluir(idUsuario) {

@@ -113,6 +113,7 @@ main {
 }
 
 main .container {
+    max-width: 70%;
     width: fit-content;
     min-width: 40%;
     border: 2px solid var(--preto);
