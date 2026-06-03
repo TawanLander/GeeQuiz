@@ -13,10 +13,10 @@ cargo char(1) not null
 
 create table quiz(
 idQuiz int primary key auto_increment,
-titulo varchar(60) not null,
+titulo varchar(300) not null,
 genero varchar(20) not null,
 tipo varchar(20) not null,
-imagem varchar(500) not null,
+imagem varchar(10000) not null,
 fkUsuario int,
 constraint fkUsuario_quiz foreign key (fkUsuario) references usuario(idUsuario) on delete cascade
 );
@@ -48,8 +48,8 @@ id int,
 fkQuiz int,
 constraint pkDupla_perguntas primary key (id, fkQuiz),
 constraint fkQuiz_perguntas foreign key (fkQuiz) references quiz(idQuiz) on delete cascade,
-titulo varchar(60) not null,
-imagem varchar(500) not null,
+titulo varchar(300) not null,
+imagem varchar(10000) not null,
 tipo char(1) not null
 );
 
@@ -59,7 +59,7 @@ fkPerguntas int,
 fkQuiz int,
 constraint pkTripla_opcoes primary key (id, fkPerguntas, fkQuiz),
 constraint fkPerguntas_opcoes foreign key (fkPerguntas, fkQuiz) references perguntas(id, fkQuiz) on delete cascade,
-titulo varchar(100) not null,
+titulo varchar(300) not null,
 tipo tinyint not null
 );
 
@@ -77,6 +77,6 @@ fkUsuario int,
 fkQuiz int,
 gostado tinyint not null,
 primary key (fkUsuario, fkQuiz),
-constraint fkUsuario_gostei foreign key (fkUsuario) references usuario(idUsuario),
-constraint fkQuiz_gostei foreign key (fkQuiz) references quiz(idQuiz)
+constraint fkUsuario_gostei foreign key (fkUsuario) references usuario(idUsuario) on delete cascade,
+constraint fkQuiz_gostei foreign key (fkQuiz) references quiz(idQuiz) on delete cascade
 );

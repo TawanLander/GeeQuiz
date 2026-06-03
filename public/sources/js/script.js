@@ -11,13 +11,18 @@ function verificarNome() {
     const nome = document.getElementById('ipt-nome');
     let nomeValor = nome.value;
 
-    if(nomeValor >= 3) passouNoNome = true;
-    else passouNoNome = false;
+    if(nomeValor.length >= 3){
+        passouNoNome = true;
+    } else {
+        passouNoNome = false;
+    }
+
     let separar = nomeValor.split(' ');
 
     for (let i = 0; i < separar.length; ++i) {
-        nomeFormatado += `${separar[i].slice(0, 1).toUpperCase() + separar[i].slice(1).toLowerCase()} `
+        nomeFormatado = `${separar[i].slice(0, 1).toUpperCase() + separar[i].slice(1).toLowerCase()} `
     }
+    nomeFormatado = nomeFormatado.trim();
 }
 
 function verificarEmail() {

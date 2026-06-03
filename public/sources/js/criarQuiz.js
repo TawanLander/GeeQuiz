@@ -91,16 +91,14 @@ function adicionarMarcadores() {
             <button onclick="terminarQuiz()">Terminar Quiz</button>
             </div>
             `
-    } else if (tamanho <= 4) { // MAX DE PERGUNTAS: 25
+    } else if (tamanho <= 3) { // MAX DE PERGUNTAS: 25
         navegacao.innerHTML = `
-            <button>Voltar Pergunta</button>
             <div class="passar">
             <button onclick="salvarPergunta()">Próxima Pergunta</button>
             </div>
             `
     } else if (tamanho < 25) {
         navegacao.innerHTML = `
-            <button>Voltar Pergunta</button>
             <div class="passar">
             <button onclick="salvarPergunta()">Próxima Pergunta</button>
             <button onclick="terminarQuiz()">Terminar Quiz</button>
@@ -108,7 +106,6 @@ function adicionarMarcadores() {
             `
     } else {
         navegacao.innerHTML = `
-            <button>Voltar Pergunta</button>
             <div class="passar">
             <button onclick="terminarQuiz()">Terminar Quiz</button>
             </div>
@@ -303,7 +300,7 @@ async function terminarQuiz() {
             const tipo = perguntasArray[i].tipo;
             const opcoes = perguntasArray[i].opcoes;
     
-            const fetchPerguntas = await fetch('quizes/cadastrar/perguntas', {
+            const fetchPerguntas = await fetch('/quizes/cadastrar/perguntas', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

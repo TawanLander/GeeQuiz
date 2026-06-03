@@ -96,7 +96,15 @@ async function autenticar(email, senha) {
 
     const token = gerarToken(); // ! GERO O TOKEN DO USUÁRIO
 
-    query = 'insert into token (token, fkUsuario) values (?, ?)'
+    query = 'select token from token where fkUsuario = ?'
+    const verificandoToken = await bd.executar(query, [result[0].idUsuario]);
+    if(!verificandoToken) return false;
+
+    if(verificandoToken.length > 0){
+      query = 'update token set token = ? where fkUsuario = ?'
+    } else {
+      query = 'insert into token (token, fkUsuario) values (?, ?)'
+    }
 
     const inserirToken = await bd.executar(query, [token, result[0].idUsuario]);
     if (!inserirToken) return false;
@@ -190,7 +198,7 @@ async function verificar(token) {
   let query = `select token from token where token = ?`;
 
   const resultado = await bd.executar(query, [token]);
-  if (!resultado) return false;
+  if (!resultado || resultado.length === 0) return false;
   
   query = `SELECT idUsuario, nome, email, identidade, timestampdiff(YEAR, dtNascimento, curdate()) as idade, date_format(dtNascimento, '%Y-%m-%d') as dtNascimento, senha, cargo FROM usuario join token on idUsuario = fkUsuario where token = ?;`; // ! PEGA TODOS OS VALORES DO USUÁRIO
 
